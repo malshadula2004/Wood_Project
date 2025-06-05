@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane fx:id="oginSignNavigationPage" prefHeight="629.0" prefWidth="981.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.LoginSignNavigationPageControllrt">
+   <children>
+      <ImageView fitHeight="629.0" fitWidth="376.0" layoutX="-5.0">
+         <image>
+            <Image url="@../image/download.jpg" />
+         </image>
+      </ImageView>
+      <AnchorPane fx:id="LSNavigation" layoutX="368.0" prefHeight="629.0" prefWidth="613.0" style="-fx-background-color: #ffead3;" />
+   </children>
+</AnchorPane>

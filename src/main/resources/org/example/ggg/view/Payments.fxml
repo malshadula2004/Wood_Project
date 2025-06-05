@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="PaymentPage" prefHeight="688.0" prefWidth="994.0" style="-fx-background-color: #f9f9f9;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.PaymentsController">
+   <children>
+      <Label layoutX="419.0" layoutY="28.0" text="Payment" textFill="#7c1616">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <HBox layoutX="109.0" layoutY="50.0" spacing="10.0">
+         <children>
+            <TextField fx:id="txtSearch" prefWidth="200.0" promptText="Search by Payment ID" style="-fx-font-size: 14px;" />
+            <Button fx:id="btnSearch" onAction="#searchPaymentsByCustomer" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Search" />
+         </children>
+      </HBox>
+      <VBox layoutX="109.0" layoutY="150.0" spacing="10.0" style="-fx-padding: 10; -fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;">
+         <children>
+            <HBox spacing="10.0">
+               <Label prefWidth="120.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Payment ID:" />
+               <TextField fx:id="txtId" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="120.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Purchase Order ID:" />
+               <TextField fx:id="txtPurchaseOrderId" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="120.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Customer ID:" />
+               <ComboBox fx:id="cmbCustomerId" prefWidth="200.0" style="-fx-font-size: 14px;" promptText="Select Customer ID" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="120.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Payment Date:" />
+               <TextField fx:id="txtPaymentDate" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="120.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Amount:" />
+               <TextField fx:id="txtAmount" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="120.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Payment Method:" />
+               <TextField fx:id="txtPaymentMethod" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+         </children>
+      </VBox>
+      <HBox layoutX="109.0" layoutY="412.0" spacing="20.0">
+         <children>
+            <Button fx:id="btnAdd" onAction="#addToPayment" prefHeight="39.0" prefWidth="100.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;" text="Add" />
+            <Button fx:id="btnUpdate" onAction="#updatePayment" prefHeight="39.0" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px;" text="Update" />
+            <Button fx:id="btnDelete" onAction="#deletePayment" prefHeight="39.0" prefWidth="100.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px;" text="Delete" />
+            <Button fx:id="btnReset" onAction="#resetFields" prefHeight="39.0" prefWidth="100.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px;" text="Reset" />
+         </children>
+      </HBox>
+      <TableView fx:id="tblPayments" layoutX="109.0" layoutY="467.0" prefHeight="200.0" prefWidth="760.0" style="-fx-background-color: #ffffff;">
+         <columns>
+            <TableColumn fx:id="colPaymentId" prefWidth="120.0" text="Payment ID" />
+            <TableColumn fx:id="colPurchaseOrdersId" prefWidth="120.0" text="Purchase Order ID" />
+            <TableColumn fx:id="colCustomerId" prefWidth="120.0" text="Customer ID" />
+            <TableColumn fx:id="colPaymentDate" prefWidth="120.0" text="Payment Date" />
+            <TableColumn fx:id="colAmount" prefWidth="120.0" text="Amount" />
+            <TableColumn fx:id="colPaymentMethod" prefWidth="120.0" text="Payment Method" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

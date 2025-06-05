@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="EmployeeSalaryPage" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.EmployeeSalaryController">
+    <children>
+        <!-- Title -->
+        <Label layoutX="300.0" layoutY="20.0" text="Employee Salary">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+
+        <!-- Labels and TextFields -->
+        <Label layoutX="50.0" layoutY="80.0" text="Employee ID:" />
+        <TextField fx:id="txtEmployeeId" layoutX="150.0" layoutY="75.0" promptText="Enter Employee ID" />
+
+        <Label layoutX="50.0" layoutY="120.0" text="Employee Name:" />
+        <TextField fx:id="txtEmployeeName" layoutX="150.0" layoutY="115.0" promptText="Enter Employee Name" />
+
+        <Label layoutX="50.0" layoutY="160.0" text="Monthly Salary:" />
+        <TextField fx:id="txtMonthlySalary" layoutX="150.0" layoutY="155.0" promptText="Enter Monthly Salary" />
+
+        <!-- Buttons -->
+        <Button fx:id="btnAdd" layoutX="400.0" layoutY="100.0" text="Add" onAction="#addEmployeeSalary" />
+        <Button fx:id="btnUpdate" layoutX="400.0" layoutY="140.0" text="Update" onAction="#updateEmployeeSalary" />
+        <Button fx:id="btnDelete" layoutX="400.0" layoutY="180.0" text="Delete" onAction="#deleteEmployeeSalary" />
+        <Button fx:id="btnReset" layoutX="400.0" layoutY="220.0" text="Reset" onAction="#resetEmployeeSalary" />
+
+
+        <!-- TableView -->
+        <TableView fx:id="tblEmployeeSalary" layoutX="50.0" layoutY="320.0" prefHeight="250.0" prefWidth="700.0">
+            <columns>
+                <TableColumn fx:id="colEmployeeId" prefWidth="200.0" text="Employee ID" />
+                <TableColumn fx:id="colEmployeeName" prefWidth="300.0" text="Employee Name" />
+                <TableColumn fx:id="colMonthlySalary" prefWidth="200.0" text="Monthly Salary" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

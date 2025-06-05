@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="DeliveryPage" prefHeight="688.0" prefWidth="994.0" style="-fx-background-color: #f9f9f9;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.DeliveryController">
+   <children>
+      <!-- Search Bar -->
+      <HBox layoutX="109.0" layoutY="50.0" spacing="10.0" />
+
+      <!-- Labels and TextFields -->
+      <VBox layoutX="109.0" layoutY="182.0" prefHeight="212.0" prefWidth="422.0" spacing="10.0" style="-fx-padding: 10; -fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.1, 0, 2);">
+         <children>
+            <HBox spacing="10.0">
+               <Label prefHeight="20.0" prefWidth="132.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Delivery ID:" />
+               <TextField fx:id="txtId" prefHeight="30.0" prefWidth="242.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefHeight="20.0" prefWidth="133.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Purchase Order ID:" />
+               <TextField fx:id="txtPurchaseOrderId" prefHeight="30.0" prefWidth="240.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefHeight="20.0" prefWidth="134.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Delivery Date:" />
+               <TextField fx:id="txtDeliveryDate" prefHeight="30.0" prefWidth="241.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefHeight="20.0" prefWidth="131.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Driver ID:" />
+               <TextField fx:id="txtDriverId" prefHeight="30.0" prefWidth="243.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefHeight="20.0" prefWidth="129.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Delivery Status:" />
+               <TextField fx:id="txtDeliveryStatus" prefHeight="30.0" prefWidth="243.0" style="-fx-font-size: 14px;" />
+            </HBox>
+         </children>
+      </VBox>
+
+      <!-- TableView -->
+      <TableView fx:id="tblDelivery" layoutX="107.0" layoutY="467.0" prefHeight="303.0" prefWidth="760.0" style="-fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;">
+         <columns>
+            <TableColumn fx:id="colDeliveryId" prefWidth="100.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Delivery ID" />
+            <TableColumn fx:id="colPurchaseOrderId" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Purchase Order ID" />
+            <TableColumn fx:id="colDeliveryDate" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Delivery Date" />
+            <TableColumn fx:id="colDriverId" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Driver ID" />
+            <TableColumn fx:id="colDeliveryStatus" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Delivery Status" />
+         </columns>
+      </TableView>
+      <TextField fx:id="txtSearch" layoutX="109.0" layoutY="107.0" prefWidth="200.0" promptText="Search by ID" style="-fx-font-size: 14px;" />
+      <Button fx:id="btnSearch" layoutX="341.0" layoutY="107.0" onAction="#SearchDelivery" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Search" />
+      <Label layoutX="419.0" layoutY="28.0" text="Delivery" textFill="#7c1616">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnAdd" layoutX="109.0" layoutY="412.0" onAction="#AddToDelivery" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
+      <Button fx:id="btnUpdate" layoutX="275.0" layoutY="412.0" onAction="#UpdateToDelivery" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
+      <Button fx:id="btnDelete" layoutX="441.0" layoutY="412.0" onAction="#DeleteToDelivery" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
+      <Button fx:id="btnReset" layoutX="605.0" layoutY="412.0" onAction="#ResetToDelivery" prefHeight="39.0" prefWidth="133.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />
+      <ImageView fitHeight="30.0" fitWidth="39.0" layoutX="126.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/add.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="294.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/changes.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="457.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/bin.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="619.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/clean.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

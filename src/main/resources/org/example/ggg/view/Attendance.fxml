@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="AttendancePage" prefHeight="688.0" prefWidth="994.0" style="-fx-background-color: #f9f9f9;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.AttendanceController">
+   <children>
+      <!-- Search Bar -->
+      <HBox layoutX="109.0" layoutY="50.0" spacing="10.0">
+         <children>
+            <TextField fx:id="txtSearch" prefWidth="200.0" promptText="Search by Attendance ID or Employee ID" style="-fx-font-size: 14px;" />
+            <Button fx:id="btnSearch" onAction="#SearchAttendance" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Search" />
+         </children>
+      </HBox>
+
+      <!-- Labels and TextFields -->
+      <VBox layoutX="109.0" layoutY="182.0" spacing="10.0" style="-fx-padding: 10; -fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.1, 0, 2);">
+         <children>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Attendance ID:" />
+               <TextField fx:id="txtAttendanceId" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Employee ID:" />
+               <TextField fx:id="txtEmployeeId" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Date:" />
+               <TextField fx:id="txtDate" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Status:" />
+               <TextField fx:id="txtStatus" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Remarks:" />
+               <TextField fx:id="txtRemarks" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+         </children>
+      </VBox>
+
+      <!-- TableView -->
+      <TableView fx:id="tblAttendance" layoutX="107.0" layoutY="467.0" prefHeight="303.0" prefWidth="760.0" style="-fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;">
+         <columns>
+            <TableColumn fx:id="colAttendanceId" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Attendance ID" />
+            <TableColumn fx:id="colEmployeeId" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Employee ID" />
+            <TableColumn fx:id="colDate" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Date" />
+            <TableColumn fx:id="colStatus" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Status" />
+            <TableColumn fx:id="colRemarks" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Remarks" />
+         </columns>
+      </TableView>
+
+      <!-- Action Buttons -->
+      <HBox layoutX="109.0" layoutY="412.0" spacing="20.0">
+         <Button fx:id="btnAdd" onAction="#AddToAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
+         <Button fx:id="btnUpdate" onAction="#UpdateToAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
+         <Button fx:id="btnDelete" onAction="#DeleteToAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
+         <Button fx:id="btnReset" onAction="#ResetAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />
+      </HBox>
+
+      <Label layoutX="419.0" layoutY="28.0" text="Attendance" textFill="#7c1616">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

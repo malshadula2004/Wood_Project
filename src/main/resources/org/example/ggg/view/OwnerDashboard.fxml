@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="OwnerDashboard" prefHeight="976.0" prefWidth="1519.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.OwnerDashboardController">
+    <children>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="79.0" layoutY="399.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/free-shipping.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="woodPalat1" fitHeight="846.0" fitWidth="413.0" layoutX="1123.0" layoutY="-5.0">
+            <image>
+                <Image url="@../image/75d52c286e57e2a6c0c423147b25286a.jpg" />
+            </image>
+        </ImageView>
+
+        <!-- Background Images -->
+        <ImageView fx:id="woodPalat" fitHeight="846.0" fitWidth="413.0" layoutY="-5.0" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1163.0" AnchorPane.topAnchor="-5.0">
+            <image>
+                <Image url="@../image/75d52c286e57e2a6c0c423147b25286a.jpg" />
+            </image>
+        </ImageView>
+        <AnchorPane layoutY="2.0" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+            <children>
+                <!-- ImageView -->
+                <ImageView fitHeight="846.0" fitWidth="1052.0" layoutX="350.0" layoutY="-5.0" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="174.0" AnchorPane.topAnchor="-5.0">
+                    <image>
+                        <Image url="@../image/ChatGPT%20Image%20May%203,%202025,%2009_09_20%20AM.png" />
+                    </image>
+                    <effect>
+                        <ColorAdjust brightness="-0.3" />
+                    </effect>
+                </ImageView>
+
+
+                <!-- Black Overlay -->
+                <Rectangle fill="black" height="846.0" layoutX="350.0" layoutY="-5.0" opacity="0.3" width="1052.0" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="174.0" AnchorPane.topAnchor="-5.0" />
+      
+                                      <AnchorPane fx:id="ownerAncerpain" layoutX="350.0" layoutY="57.0" prefHeight="783.0" prefWidth="1052.0">
+                  <children>
+                  <ImageView fitHeight="31.0" fitWidth="46.0" layoutX="416.0" layoutY="-16.0" pickOnBounds="true" preserveRatio="true" />
+            
+            
+                    <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="231.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="btnOrderSearch" layoutX="104.0" layoutY="86.0" mnemonicParsing="false" onAction="#orderSearchAcction" opacity="0.46" prefHeight="97.0" prefWidth="193.0" text="Search Orders" />
+                  <Button fx:id="btnPaymentt" layoutX="384.0" layoutY="86.0" mnemonicParsing="false" onAction="#PaymentAcction" opacity="0.58" prefHeight="97.0" prefWidth="193.0" text="Payment" />
+                  <Button fx:id="btnSubOrder" layoutX="672.0" layoutY="86.0" mnemonicParsing="false" onAction="#subOrderAcction" opacity="0.55" prefHeight="97.0" prefWidth="193.0" text="Search supplier Orders " />
+                  </children>
+            </AnchorPane>
+              <ImageView fx:id="btnSofa" fitHeight="232.0" fitWidth="256.0" layoutX="1304.0" layoutY="256.0" onMouseEntered="#applyShadowEffect" onMouseExited="#removeShadowEffect" pickOnBounds="true" preserveRatio="true" styleClass="image-shadow-effect">
+                  <effect>
+                      <DropShadow color="BLACK" offsetX="10" offsetY="10" radius="15" />
+                  </effect>
+                  <image>
+                      <Image url="@../image/249e7a4de226faee6d02fbd33427ef95-removebg-preview.png" />
+                  </image>
+              </ImageView>
+                <!-- Menu Button -->
+                <MenuButton fx:id="AllItem" layoutX="1380.0" layoutY="279.0" mnemonicParsing="false" onMouseEntered="#applyShadowEffect" onMouseExited="#removeShadowEffect" opacity="0.0" prefHeight="171.0" prefWidth="158.0" text="Select Item">
+                    <items>
+                        <MenuItem fx:id="itemChair" mnemonicParsing="false" onAction="#handleMenuItemAction" text="Chair" />
+                        <MenuItem fx:id="itemTable" mnemonicParsing="false" onAction="#handleMenuItemAction" text="Table" />
+                        <MenuItem fx:id="itemSofa" mnemonicParsing="false" onAction="#handleMenuItemAction" text="Sofa" />
+                    </items>
+                </MenuButton>
+              <ImageView fx:id="AllWood" fitHeight="292.0" fitWidth="185.0" layoutX="1359.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" styleClass="image-shadow-effect">
+                  <effect>
+                      <DropShadow color="BLACK" offsetX="10" offsetY="10" radius="15" />
+                  </effect>
+                  <image>
+                      <Image url="@../image/30db43ea91af5605ea48464bab799eab-removebg-preview.png" />
+                  </image>
+              </ImageView>
+
+                                  <Button fx:id="btnWoods" layoutX="1415.0" layoutY="600.0" mnemonicParsing="false" onAction="#woodsActtion" onMouseEntered="#applyShadowEffecttt" onMouseExited="#removeShadowEffecttt" opacity="0.0" prefHeight="97.0" prefWidth="125.0" text="Button" />
+            <Button fx:id="btnEmpolyee1" layoutX="44.0" layoutY="150.0" mnemonicParsing="false" onAction="#EmpolyeeAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Inventory">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <effect>
+                  <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+               </effect>
+            </Button>
+              <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="76.0" layoutY="151.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../image/insurance.png" />
+                  </image>
+              </ImageView>
+              <MenuButton fx:id="btnInventorymenu" layoutX="44.0" layoutY="151.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: #fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Inventory">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+                  <effect>
+                      <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+                  </effect>
+                  <items>
+                      <MenuItem fx:id="menuInventory" onAction="#navigateToInventory" text="Inventory Page" />
+                      <MenuItem fx:id="menuWoodInventory" onAction="#navigateToWoodInventory" text="Wood Inventory Page" />
+                  </items>
+              </MenuButton>
+            <Button fx:id="btnSupliyer1" layoutX="44.0" layoutY="200.0" mnemonicParsing="false" onAction="#SuplierAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Order">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <effect>
+                  <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+               </effect>
+            </Button>
+      
+                                <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="80.0" layoutY="209.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../image/checkout.png" />
+                  </image>
+              </ImageView>
+              <MenuButton fx:id="menuOrder" layoutX="44.0" layoutY="200.0" mnemonicParsing="false" opacity="0.0" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: #fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Order">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+                  <effect>
+                      <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+                  </effect>
+                  <items>
+                      <MenuItem onAction="#viewOrdersAction" text="Item Order" />
+                      <MenuItem onAction="#createOrderAction" text="Wood Order" />
+      
+                              </items>
+              </MenuButton>
+            </children>
+        </AnchorPane>
+
+
+        <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="699.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/home.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnHome" layoutX="702.0" layoutY="18.0" mnemonicParsing="false" onAction="#HomeAction" opacity="0.0" prefHeight="31.0" prefWidth="10.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Home       ">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Button>
+        <Button fx:id="btnCustomer" layoutX="42.0" layoutY="50.0" mnemonicParsing="false" onAction="#customerAction" prefHeight="38.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Customer">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="83.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/customer.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnEmpolyee" layoutX="42.0" layoutY="100.0" mnemonicParsing="false" onAction="#EmpolyeeAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Empolyee">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="331.0" layoutY="139.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="331.0" layoutY="139.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fitHeight="39.0" fitWidth="38.0" layoutX="80.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/employee.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnSupliyer" layoutX="42.0" layoutY="250.0" mnemonicParsing="false" onAction="#SuplierAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Supplier">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="80.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/supplier.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnItem" layoutX="42.0" layoutY="300.0" mnemonicParsing="false" onAction="#ItemAction" prefHeight="38.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Item    ">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="38.0" fitWidth="31.0" layoutX="84.0" layoutY="304.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/checklist.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnWood" layoutX="42.0" layoutY="350.0" mnemonicParsing="false" onAction="#WoodAction" prefHeight="38.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Wood">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <Button fx:id="btnReport" layoutX="42.0" layoutY="704.0" mnemonicParsing="false" onAction="#ReportAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Report">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="80.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/log.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="84.0" layoutY="705.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/report.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnSupplierOrder" layoutX="42.0" layoutY="450.0" mnemonicParsing="false" onAction="#SuplierOrderAction" prefHeight="38.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="            Supplier Order">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="79.0" layoutY="450.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/supplier.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnTaskAssignment" layoutX="42.0" layoutY="500.0" mnemonicParsing="false" onAction="#TaskAssignmentAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="              TaskAssignment">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="31.0" fitWidth="38.0" layoutX="84.0" layoutY="505.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/assignment.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnAttendance" layoutX="42.0" layoutY="550.0" mnemonicParsing="false" onAction="#AttendenceAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Attendance">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="341.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fitHeight="31.0" fitWidth="38.0" layoutX="84.0" layoutY="555.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/attendance.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnVehical" layoutX="42.0" layoutY="600.0" mnemonicParsing="false" onAction="#vehicalAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="      Vehical Details">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="84.0" layoutY="601.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/van.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnDelivery" layoutX="42.0" layoutY="398.0" mnemonicParsing="false" onAction="#DeliveryAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Delivery">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <Button fx:id="btnPayment" layoutX="42.0" layoutY="651.0" mnemonicParsing="false" onAction="#PaymentAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Payment">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+            </effect>
+        </Button>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="80.0" layoutY="652.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/cash-payment.png" />
+            </image>
+        </ImageView>
+        <Text layoutX="830.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WOOD HUB">
+            <font>
+                <Font name="Agency FB Bold" size="46.0" />
+            </font>
+        </Text>
+        <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="1062.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/503849.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnSetting" layoutX="1059.0" layoutY="17.0" mnemonicParsing="false" onAction="#SettingACttion" opacity="0.0" prefHeight="31.0" prefWidth="44.0" text="Button" />
+        <ImageView fitHeight="46.0" fitWidth="59.0" layoutX="1123.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../image/log-out.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnLoginOut" layoutX="1123.0" layoutY="18.0" mnemonicParsing="false" onAction="#LoginOutActttion" opacity="0.0" prefHeight="31.0" prefWidth="46.0" text="Button" />
+        <Label layoutX="1427.0" layoutY="203.0" prefHeight="35.0" prefWidth="98.0" text="All Item" textFill="WHITE">
+            <DropShadow color="BLACK" offsetX="10" offsetY="10" radius="15" />
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <Label layoutX="1421.0" layoutY="503.0" prefHeight="35.0" prefWidth="110.0" text="All Wood" textFill="WHITE">
+            <DropShadow color="BLACK" offsetX="10" offsetY="10" radius="15" />
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <MenuButton layoutX="1001.0" layoutY="17.0" mnemonicParsing="false" opacity="0" text="MenuButton">
+            <items>
+                <MenuItem fx:id="cachiar" mnemonicParsing="false" onAction="#handleMenuItemActionc" text="Change Username Password" />
+                <MenuItem fx:id="accountant" mnemonicParsing="false" onAction="#handleMenuItemActiona" text="Table" />
+            </items>
+            <contextMenu>
+                <ContextMenu>
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                </ContextMenu>
+            </contextMenu>
+        </MenuButton>
+      <ImageView fitHeight="39.0" fitWidth="98.0" layoutX="757.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/email%20(1).png" />
+         </image>
+      </ImageView>
+        <Button fx:id="btnEmail" layoutX="762.0" layoutY="18.0" mnemonicParsing="false" onAction="#emailActtion" opacity="0" prefHeight="20.0" prefWidth="23.0" text="send to email" />
+
+
+
+    </children>
+</AnchorPane>

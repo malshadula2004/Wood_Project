@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.ggg.controller.EmailController" prefWidth="400" prefHeight="300">
+    <TextField fx:id="txtSenderEmail" layoutX="100" layoutY="20" prefWidth="200" promptText="Sender Email"/>
+    <TextField fx:id="txtRecipientEmail" layoutX="100" layoutY="60" prefWidth="200" promptText="Recipient Email"/>
+    <TextField fx:id="txtSubject" layoutX="100" layoutY="100" prefWidth="200" promptText="Subject"/>
+    <TextArea fx:id="txtMessage" layoutX="100" layoutY="140" prefWidth="200" prefHeight="100" promptText="Message"/>
+    <Button layoutX="150" layoutY="260" text="Send Email" onAction="#sendEmail"/>
+</AnchorPane>

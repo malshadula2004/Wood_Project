@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.AddWoodController">
+    <Label text="Add Wood Image and Name" />
+    <ImageView fx:id="woodImageView" fitHeight="200" fitWidth="300" pickOnBounds="true" preserveRatio="true" />
+    <Button text="Choose Image" onAction="#chooseImage" />
+    <TextField fx:id="woodNameField" promptText="Enter wood name" />
+    <Button text="Add Wood" onAction="#addWood" />
+</VBox>

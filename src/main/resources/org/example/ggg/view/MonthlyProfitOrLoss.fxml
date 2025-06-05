@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="MonthlyProfitOrLossPage" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.MonthlyProfitOrLossController">
+    <children>
+        <!-- Title -->
+        <Label layoutX="300.0" layoutY="20.0" text="Monthly Profit or Loss">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+
+        <!-- Labels and TextFields -->
+        <Label layoutX="50.0" layoutY="80.0" text="ID:" />
+        <TextField fx:id="txtID" layoutX="150.0" layoutY="75.0" promptText="Enter ID" />
+
+        <Label layoutX="50.0" layoutY="120.0" text="Order Total:" />
+        <TextField fx:id="txtOrderTotal" layoutX="150.0" layoutY="115.0" promptText="Enter Order Total" />
+
+        <Label layoutX="50.0" layoutY="160.0" text="Payment Total:" />
+        <TextField fx:id="txtPaymentTotal" layoutX="150.0" layoutY="155.0" promptText="Enter Payment Total" />
+
+        <Label layoutX="50.0" layoutY="200.0" text="Loss/Profit Amount:" />
+        <TextField fx:id="txtLossOrProfitAmount" layoutX="150.0" layoutY="195.0" promptText="Enter Loss or Profit Amount" />
+
+        <Label layoutX="50.0" layoutY="240.0" text="Final:" />
+        <TextField fx:id="txtFinal" layoutX="150.0" layoutY="235.0" promptText="Enter Final Status" />
+
+        <!-- Buttons -->
+        <Button fx:id="btnAdd" layoutX="400.0" layoutY="100.0" text="Add" onAction="#addRecord" />
+        <Button fx:id="btnUpdate" layoutX="400.0" layoutY="140.0" text="Update" onAction="#updateRecord" />
+        <Button fx:id="btnDelete" layoutX="400.0" layoutY="180.0" text="Delete" onAction="#deleteRecord" />
+        <Button fx:id="btnReset" layoutX="400.0" layoutY="220.0" text="Reset" onAction="#resetFields" />
+
+        <!-- TableView -->
+        <TableView fx:id="tblMonthlyProfitOrLoss" layoutX="50.0" layoutY="320.0" prefHeight="250.0" prefWidth="700.0">
+            <columns>
+                <TableColumn fx:id="colID" prefWidth="100.0" text="ID" />
+                <TableColumn fx:id="colOrderTotal" prefWidth="150.0" text="Order Total" />
+                <TableColumn fx:id="colPaymentTotal" prefWidth="150.0" text="Payment Total" />
+                <TableColumn fx:id="colLossOrProfitAmount" prefWidth="150.0" text="Loss/Profit Amount" />
+                <TableColumn fx:id="colFinal" prefWidth="150.0" text="Final" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="woodPage" prefHeight="688.0" prefWidth="994.0" style="-fx-background-color: #f9f9f9;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.WoodController">
+    <children>
+        <!-- Title -->
+        <Label layoutX="419.0" layoutY="28.0" text="Wood Management" textFill="#7c1616">
+            <font>
+                <Font name="System Bold" size="30.0" />
+            </font>
+        </Label>
+
+        <!-- Search Bar -->
+        <TextField fx:id="txtSearch" layoutX="107.0" layoutY="90.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter Wood ID or Type" style="-fx-font-size: 14px;" />
+        <Button fx:id="btnSearch" layoutX="437.0" layoutY="90.0" onAction="#searchWood" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px;" text="Search" />
+
+        <!-- Input Fields -->
+        <VBox layoutX="108.0" layoutY="163.0" prefHeight="232.0" prefWidth="335.0" spacing="15.0" style="-fx-padding: 10; -fx-background-color: #ffffff;               -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;               -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.1, 0, 2);">
+            <children>
+                <HBox spacing="10.0" />
+                <HBox spacing="10.0">
+                    <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Type:" />
+                    <TextField fx:id="txtType" prefWidth="200.0" style="-fx-font-size: 14px;" />
+                </HBox>
+                <HBox spacing="10.0">
+                    <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Grade:" />
+                    <TextField fx:id="txtGrade" prefWidth="200.0" style="-fx-font-size: 14px;" />
+                </HBox>
+                <HBox spacing="10.0">
+                    <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Dimensions:" />
+                    <TextField fx:id="txtDimensions" prefWidth="200.0" style="-fx-font-size: 14px;" />
+                </HBox>
+                <HBox spacing="10.0">
+                    <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Unit Price:" />
+                    <TextField fx:id="txtUnitPrice" prefWidth="200.0" style="-fx-font-size: 14px;" />
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Buttons -->
+        <Button fx:id="btnAdd" layoutX="109.0" layoutY="412.0" onAction="#addWood" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
+        <Button fx:id="btnUpdate" layoutX="275.0" layoutY="412.0" onAction="#updateWood" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
+        <Button fx:id="btnDelete" layoutX="441.0" layoutY="412.0" onAction="#deleteWood" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
+        <Button fx:id="btnReset" layoutX="605.0" layoutY="412.0" onAction="#resetToWood" prefHeight="39.0" prefWidth="133.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />
+
+        <!-- TableView -->
+        <TableView fx:id="tblWood" layoutX="107.0" layoutY="467.0" prefHeight="303.0" prefWidth="760.0" style="-fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;">
+            <columns>
+                <TableColumn fx:id="colWoodID" prefWidth="100.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Wood ID" />
+                <TableColumn fx:id="colWoodType" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Type" />
+                <TableColumn fx:id="colWoodGrade" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Grade" />
+                <TableColumn fx:id="colWoodDimensions" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Dimensions" />
+                <TableColumn fx:id="colWoodUnitPrice" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Unit Price" />
+            </columns>
+        </TableView>
+      <ImageView fitHeight="30.0" fitWidth="39.0" layoutX="140.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/add.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/changes.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="467.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/bin.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="624.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/clean.png" />
+         </image>
+      </ImageView>
+           <Label layoutX="546.0" layoutY="163.0" opacity="0.0" prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Wood ID:" />
+           <TextField fx:id="txtId" layoutX="687.0" layoutY="212.0" opacity="0.0" prefWidth="200.0" style="-fx-font-size: 14px;" />
+    </children>
+</AnchorPane>
