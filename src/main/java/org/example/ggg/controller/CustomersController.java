@@ -6,12 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.ggg.Util.CrudUtil;
-import org.example.ggg.dto.CustomersDto;
-import org.example.ggg.model.CustomersModel;
-
+import org.example.ggg.bo.BOFactory;
+import org.example.ggg.bo.CustomerBO;
+import org.example.ggg.model.CustomersDto;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import static org.example.ggg.bo.BOFactory.getInstance;
 
 public class CustomersController {
 
@@ -26,6 +26,8 @@ public class CustomersController {
 
     private ObservableList<CustomersDto> customerList = FXCollections.observableArrayList();
 
+    CustomerBO customerBO = (CustomerBO) getInstance(BOFactory.BOTypes.CUSTOMER);
+
     @FXML
     public void initialize() {
         colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -34,12 +36,27 @@ public class CustomersController {
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colPaymentMethod.setCellValueFactory(new PropertyValueFactory<>("paymentMethod"));
+
         loadCustomerData();
+
+        tblCustomer.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                populateFields(newValue);
+            }
+        });
+    }
+
+    private void populateFields(CustomersDto customer) {
+        txtName.setText(customer.getName());
+        txtContactInfo.setText(customer.getContactInfo());
+        txtAddress.setText(customer.getAddress());
+        txtEmail.setText(customer.getEmail());
+        txtPayment.setText(customer.getPaymentMethod());
     }
 
     private void loadCustomerData() {
         try {
-            ArrayList<CustomersDto> customers = CustomersModel.loadCustomers();
+            ArrayList<CustomersDto> customers = customerBO.getAllCustomers();
             customerList.clear();
             customerList.addAll(customers);
             tblCustomer.setItems(customerList);
@@ -48,22 +65,62 @@ public class CustomersController {
         }
     }
 
+    @FXML
+    private void AddToCustomer(ActionEvent event) {
+        String id = generateCustomerId();
+        String name = txtName.getText().trim();
+        String contactInfo = txtContactInfo.getText().trim();
+        String address = txtAddress.getText().trim();
+        String email = txtEmail.getText().trim();
+        String paymentMethod = txtPayment.getText().trim();
 
+        if (!validateInputs(name, contactInfo, address, email, paymentMethod)) {
+            return;
+        }
 
+        CustomersDto customer = new CustomersDto(id, name, contactInfo, address, email, paymentMethod);
+
+        try {
+            if (customerBO.addCustomer(customer)) {
+                customerList.add(customer);
+                tblCustomer.refresh();
+                showAlert("Success", "Customer added successfully.");
+                clearFields();
+            } else {
+                showAlert("Error", "Failed to add customer.");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert("Error", "Failed to add customer: " + e.getMessage());
+        }
+    }
 
     @FXML
     private void UpdateToCustomer(ActionEvent event) {
         CustomersDto selected = tblCustomer.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            selected.setName(txtName.getText());
-            selected.setContactInfo(txtContactInfo.getText());
-            selected.setAddress(txtAddress.getText());
-            selected.setEmail(txtEmail.getText());
-            selected.setPaymentMethod(txtPayment.getText());
+            String name = txtName.getText().trim();
+            String contactInfo = txtContactInfo.getText().trim();
+            String address = txtAddress.getText().trim();
+            String email = txtEmail.getText().trim();
+            String paymentMethod = txtPayment.getText().trim();
+
+            if (!validateInputs(name, contactInfo, address, email, paymentMethod)) {
+                return;
+            }
+
+            selected.setName(name);
+            selected.setContactInfo(contactInfo);
+            selected.setAddress(address);
+            selected.setEmail(email);
+            selected.setPaymentMethod(paymentMethod);
+
             try {
-                CustomersModel.updateCustomer(selected);
-                tblCustomer.refresh();
-                clearFields();
+                if (customerBO.updateCustomer(selected)) {
+                    tblCustomer.refresh();
+                    clearFields();
+                } else {
+                    showAlert("Error", "Failed to update customer.");
+                }
             } catch (SQLException | ClassNotFoundException e) {
                 showAlert("Error", "Failed to update customer: " + e.getMessage());
             }
@@ -77,9 +134,12 @@ public class CustomersController {
         CustomersDto selected = tblCustomer.getSelectionModel().getSelectedItem();
         if (selected != null) {
             try {
-                CustomersModel.deleteCustomer(selected.getCustomerId());
-                customerList.remove(selected);
-                clearFields();
+                if (customerBO.deleteCustomer(selected.getCustomerId())) {
+                    customerList.remove(selected);
+                    clearFields();
+                } else {
+                    showAlert("Error", "Failed to delete customer.");
+                }
             } catch (SQLException | ClassNotFoundException e) {
                 showAlert("Error", "Failed to delete customer: " + e.getMessage());
             }
@@ -92,13 +152,29 @@ public class CustomersController {
     private void SearchCustomer(ActionEvent event) {
         String keyword = txtSearch.getText().trim();
         try {
-            ArrayList<CustomersDto> searchResults = CustomersModel.searchCustomer(keyword);
+            ArrayList<CustomersDto> searchResults = customerBO.searchCustomers(keyword);
             customerList.clear();
             customerList.addAll(searchResults);
             tblCustomer.setItems(customerList);
         } catch (SQLException | ClassNotFoundException e) {
             showAlert("Error", "Failed to search customers: " + e.getMessage());
         }
+    }
+
+    private boolean validateInputs(String name, String contactInfo, String address, String email, String paymentMethod) {
+        if (name.isEmpty() || contactInfo.isEmpty() || address.isEmpty() || email.isEmpty() || paymentMethod.isEmpty()) {
+            showAlert("Validation Error", "All fields are required.");
+            return false;
+        }
+        if (!contactInfo.matches("\\d{10}")) {
+            showAlert("Validation Error", "Contact Info must be a 10-digit number.");
+            return false;
+        }
+        if (!email.matches("^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$")) {
+            showAlert("Validation Error", "Invalid email format.");
+            return false;
+        }
+        return true;
     }
 
     private String generateCustomerId() {
@@ -125,40 +201,5 @@ public class CustomersController {
         txtSearch.clear();
         tblCustomer.setItems(customerList);
         clearFields();
-    }
-
-    @FXML
-    private void AddToCustomer(ActionEvent event) {
-        // Generate a new Customer ID
-        String id = generateCustomerId();
-        String name = txtName.getText().trim();
-        String contactInfo = txtContactInfo.getText().trim();
-        String address = txtAddress.getText().trim();
-        String email = txtEmail.getText().trim();
-        String paymentMethod = txtPayment.getText().trim();
-
-        // Validate input
-        if (name.isEmpty() || contactInfo.isEmpty() || address.isEmpty() || email.isEmpty() || paymentMethod.isEmpty()) {
-            showAlert("Validation Error", "All fields are required.");
-            return;
-        }
-
-        // Create a new CustomersDto object
-        CustomersDto customer = new CustomersDto(id, name, contactInfo, address, email, paymentMethod);
-
-        try {
-            // Call the model to add the customer
-            String result = CustomersModel.addCustomer(customer);
-            if (result.equals("Customer added successfully.")) {
-                customerList.add(customer); // Add to observable list
-                tblCustomer.refresh(); // Refresh table view
-                showAlert("Success", result);
-                clearFields(); // Clear form fields
-            } else {
-                showAlert("Error", result);
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            showAlert("Error", "Failed to add customer: " + e.getMessage());
-        }
     }
 }

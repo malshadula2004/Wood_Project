@@ -62,9 +62,7 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Button fx:id="btnAdd" layoutX="109.0" layoutY="412.0" onAction="#AddToCustomer" prefHeight="39.0" prefWidth="155.0"
-              style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;"
-              text="Add" />
+      <Button fx:id="btnAdd" layoutX="109.0" layoutY="412.0" onAction="#AddToCustomer" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
       <Button fx:id="btnUpdate" layoutX="275.0" layoutY="412.0" onAction="#UpdateToCustomer" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
       <Button fx:id="btnDelete" layoutX="441.0" layoutY="412.0" onAction="#DeleteToCustomer" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
       <Button fx:id="btnReset" layoutX="605.0" layoutY="412.0" onAction="#ResetToCustomer" prefHeight="39.0" prefWidth="133.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />

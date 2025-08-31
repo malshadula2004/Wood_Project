@@ -1,47 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="VehicalPage" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.VehicleDetailsController">
+<AnchorPane fx:id="VehicalPage" prefHeight="688.0" prefWidth="994.0" style="-fx-background-color: #f9f9f9;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.VehicleDetailsController">
    <children>
-      <!-- Labels -->
-      <Label layoutX="30.0" layoutY="30.0" text="Vehicle ID" />
-      <Label layoutX="30.0" layoutY="80.0" text="Vehicle Number" />
-      <Label layoutX="30.0" layoutY="130.0" text="Type" />
-      <Label layoutX="30.0" layoutY="180.0" text="Capacity" />
-      <Label layoutX="30.0" layoutY="230.0" text="Status" />
-      <Label layoutX="30.0" layoutY="280.0" text="User ID" />
+      <!-- Search Bar -->
+      <HBox layoutX="109.0" layoutY="50.0" spacing="10.0" />
 
-      <!-- TextFields -->
-      <TextField fx:id="txtId" layoutX="150.0" layoutY="30.0" />
-      <TextField fx:id="txtVehicalNumber" layoutX="150.0" layoutY="80.0" />
-      <TextField fx:id="txtType" layoutX="150.0" layoutY="130.0" />
-      <TextField fx:id="txtCapacity" layoutX="150.0" layoutY="180.0" />
-      <TextField fx:id="txtStatus" layoutX="150.0" layoutY="230.0" />
-      <TextField fx:id="txtUserId" layoutX="150.0" layoutY="280.0" />
-
-      <!-- Buttons -->
-      <Button fx:id="btnAdd" layoutX="400.0" layoutY="50.0" text="Add" onAction="#AddToVehical" />
-      <Button fx:id="btnUpdate" layoutX="400.0" layoutY="100.0" text="Update" onAction="#UpdateToVehical" />
-      <Button fx:id="btnDelete" layoutX="400.0" layoutY="150.0" text="Delete" onAction="#DeleteToVehical" />
-      <Button fx:id="btnReset" layoutX="400.0" layoutY="200.0" text="Reset" onAction="#ResetToVehical" />
+      <!-- Labels and TextFields -->
+      <VBox layoutX="109.0" layoutY="182.0" spacing="10.0" style="-fx-padding: 10; -fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.1, 0, 2);">
+         <children>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Vehicle ID:" />
+               <TextField fx:id="txtId" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Vehicle Number:" />
+               <TextField fx:id="txtVehicalNumber" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Type:" />
+               <TextField fx:id="txtType" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Capacity:" />
+               <TextField fx:id="txtCapacity" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Status:" />
+               <TextField fx:id="txtStatus" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+            <HBox spacing="10.0">
+               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="User ID:" />
+               <TextField fx:id="txtUserId" prefWidth="200.0" style="-fx-font-size: 14px;" />
+            </HBox>
+         </children>
+      </VBox>
 
       <!-- TableView -->
-      <TableView fx:id="tblVehical" layoutX="30.0" layoutY="350.0" prefHeight="200.0" prefWidth="740.0">
+      <TableView fx:id="tblVehical" layoutX="107.0" layoutY="467.0" prefHeight="303.0" prefWidth="760.0" style="-fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;">
          <columns>
-            <TableColumn fx:id="colVehicalId" prefWidth="120.0" text="Vehicle ID" />
-            <TableColumn fx:id="colVehicalNumber" prefWidth="120.0" text="Vehicle Number" />
-            <TableColumn fx:id="colType" prefWidth="120.0" text="Type" />
-            <TableColumn fx:id="colCapacity" prefWidth="120.0" text="Capacity" />
-            <TableColumn fx:id="colStatus" prefWidth="120.0" text="Status" />
-            <TableColumn fx:id="colUserId" prefWidth="120.0" text="User ID" />
+            <TableColumn fx:id="colVehicalId" prefWidth="100.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Vehicle ID" />
+            <TableColumn fx:id="colVehicalNumber" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Vehicle Number" />
+            <TableColumn fx:id="colType" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Type" />
+            <TableColumn fx:id="colCapacity" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Capacity" />
+            <TableColumn fx:id="colStatus" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Status" />
+            <TableColumn fx:id="colUserId" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="User ID" />
          </columns>
       </TableView>
+      <TextField fx:id="txtSearch" layoutX="109.0" layoutY="107.0" prefWidth="200.0" promptText="Search by ID or Type" style="-fx-font-size: 14px;" />
+      <Button fx:id="btnSearch" layoutX="341.0" layoutY="107.0" onAction="#SearchVehical" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Search" />
+      <Label layoutX="419.0" layoutY="28.0" text="Vehicle Details" textFill="#7c1616">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnAdd" layoutX="109.0" layoutY="412.0" onAction="#AddToVehical" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
+      <Button fx:id="btnUpdate" layoutX="275.0" layoutY="412.0" onAction="#UpdateToVehical" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
+      <Button fx:id="btnDelete" layoutX="441.0" layoutY="412.0" onAction="#DeleteToVehical" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
+      <Button fx:id="btnReset" layoutX="605.0" layoutY="412.0" onAction="#ResetToVehical" prefHeight="39.0" prefWidth="133.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />
+      <ImageView fitHeight="30.0" fitWidth="39.0" layoutX="126.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/add.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="294.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/changes.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="457.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/bin.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="619.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/clean.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

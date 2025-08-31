@@ -6,8 +6,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import org.example.ggg.model.UserModel;
-import org.example.ggg.dto.UserDto;
+import org.example.ggg.dao.impl.UserModel;
+import org.example.ggg.model.UserDto;
 
 import java.io.IOException;
 
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     public void GoToHomePageAcction(ActionEvent actionEvent) throws IOException {
-        SignPage.getChildren().clear();
+
         AnchorPane page1 = FXMLLoader.load(getClass().getResource("/org/example/ggg/view/page3.fxml"));
         SignPage.getChildren().setAll(page1);
     }

@@ -138,8 +138,6 @@ public class Page1Controller {
     }
 
     public void gotopage11acttion(javafx.event.ActionEvent actionEvent) throws IOException {
-        Stage currentStage = (Stage) woodtext.getScene().getWindow();  // get current window (Page1)
-
         AnchorPane page = FXMLLoader.load(getClass().getResource("/org/example/ggg/view/page3.fxml"));
         Stage newStage = new Stage();
         newStage.initStyle(StageStyle.UNDECORATED);
@@ -147,15 +145,7 @@ public class Page1Controller {
         newStage.setResizable(false);
         newStage.setWidth(790);
         newStage.setHeight(550);
-
-        currentStage.hide();  // Hide Page1
-
-        newStage.show();      // Show page3
-
-        // When page3 is closed, show Page1 again
-        newStage.setOnCloseRequest(event -> {
-            currentStage.show();
-        });
+        newStage.show();
     }
 
     public void goToPage1Acttion(javafx.event.ActionEvent actionEvent) throws IOException {

@@ -6,13 +6,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.ggg.dto.EmployeeSalaryDto;
-import org.example.ggg.model.EmployeeSalaryModel;
+import javafx.scene.layout.AnchorPane;
+import org.example.ggg.model.EmployeeSalaryDto;
+import org.example.ggg.dao.impl.EmployeeSalaryModel;
 
 import java.sql.SQLException;
 
 public class EmployeeSalaryController {
 
+    public AnchorPane EmployeeSalaryPage;
     @FXML
     private TextField txtEmployeeId;
 
@@ -21,6 +23,12 @@ public class EmployeeSalaryController {
 
     @FXML
     private TextField txtMonthlySalary;
+
+    @FXML
+    private TextField txtWD;
+
+    @FXML
+    private TextField txtTA;
 
     @FXML
     private TableView<EmployeeSalaryDto> tblEmployeeSalary;
@@ -38,13 +46,38 @@ public class EmployeeSalaryController {
 
     @FXML
     public void initialize() {
-        // Initialize Table Columns
         colEmployeeId.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
         colEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
         colMonthlySalary.setCellValueFactory(new PropertyValueFactory<>("monthlySalary"));
 
-        // Load Data
         loadEmployeeSalaries();
+
+        txtEmployeeId.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                loadEmployeeData(newValue);
+            } else {
+                clearFields();
+            }
+        });
+    }
+
+    private void loadEmployeeData(String employeeId) {
+        try {
+            String employeeName = EmployeeSalaryModel.getEmployeeName(employeeId);
+            int workedDays = EmployeeSalaryModel.getDaysWorkedThisMonth(employeeId);
+            int taskDays = EmployeeSalaryModel.getTaskCompletionDays(employeeId);
+
+            int totalDays = workedDays + taskDays;
+            int salary = totalDays * 1500;
+
+            txtEmployeeName.setText(employeeName);
+            txtWD.setText(String.valueOf(workedDays));
+            txtTA.setText(String.valueOf(taskDays));
+            txtMonthlySalary.setText(String.valueOf(salary));
+
+        } catch (SQLException | ClassNotFoundException e) {
+            showError("Error", "Failed to load employee data.");
+        }
     }
 
     private void loadEmployeeSalaries() {
@@ -119,6 +152,8 @@ public class EmployeeSalaryController {
         txtEmployeeId.clear();
         txtEmployeeName.clear();
         txtMonthlySalary.clear();
+        txtWD.clear();
+        txtTA.clear();
     }
 
     private void showInfo(String title, String message) {

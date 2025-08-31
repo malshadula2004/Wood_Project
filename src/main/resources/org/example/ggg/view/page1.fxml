@@ -28,7 +28,7 @@
          </image>
       </ImageView>
 
-      <ImageView fx:id="imageview4" fitHeight="865.0" fitWidth="1208.0" layoutX="-18.0" layoutY="7.0" AnchorPane.topAnchor="0.0">
+      <ImageView fx:id="imageview4" fitHeight="874.0" fitWidth="1257.0" layoutX="-3.0" layoutY="-12.0" AnchorPane.topAnchor="-12.0">
          <image>
             <Image url="@../image/pexels-daniel-reche-718241-7109998.jpg" />
          </image>
@@ -52,17 +52,14 @@
          </image>
       </ImageView>
 
-      <Button layoutX="668.0" layoutY="578.0" mnemonicParsing="false" onAction="#goToPage1Acttion" prefHeight="51.0" prefWidth="137.0" style="-fx-background-radius: 20;" text="SIGN UP" textFill="#140c08">
+      <Button layoutX="650.0" layoutY="553.0" mnemonicParsing="false" onAction="#goToPage1Acttion" prefHeight="51.0" prefWidth="137.0" style="-fx-background-radius: 20;" text="SIGN UP" textFill="#140c08">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Button>
-      <Button fx:id="btnlogin" layoutX="390.0" layoutY="578.0" mnemonicParsing="false" onAction="#gotopage11acttion" prefHeight="54.0" prefWidth="160.0" style="-fx-background-radius: 20px; -fx-border-radius: 20px;" text="   LOGIN">
+      <Button fx:id="btnlogin" layoutX="407.0" layoutY="554.0" mnemonicParsing="false" onAction="#gotopage11acttion" prefHeight="51.0" prefWidth="137.0" style="-fx-background-radius: 20px; -fx-border-radius: 20px;" text="LOGIN">
          <font>
             <Font name="System Bold" size="25.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="22.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" />
-         </graphic></Button>
+         </font></Button>
 
       <ImageView fx:id="bpic1" fitHeight="391.0" fitWidth="376.0" layoutX="1196.0" layoutY="434.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0">
          <effect>

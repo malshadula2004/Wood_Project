@@ -9,8 +9,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.ggg.dto.SupplierOrderDto;
-import org.example.ggg.model.SupplierOrderModel;
+import org.example.ggg.model.SupplierOrderDto;
+import org.example.ggg.dao.impl.SupplierOrderModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

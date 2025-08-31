@@ -2,231 +2,198 @@ package org.example.ggg.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import org.example.ggg.TM.CartTM;
-import org.example.ggg.dto.InventoryDto;
-import org.example.ggg.dto.ItemsDto;
-import org.example.ggg.model.CustomersModel;
-import org.example.ggg.model.InventoryModel;
+import org.example.ggg.bo.SupplierOrderBO;
+import org.example.ggg.bo.SupplierOrderBOImpl;
+import org.example.ggg.dao.impl.SuppliersModel;
+import org.example.ggg.model.SupplierOrderDto;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Optional;
+import java.time.LocalDate;
 
-public class PurchaseOrdersController {
-
-    @FXML
-    private Label lblOrderId, orderDate, lblCustomerName;
+public class SupplierOrderController {
 
     @FXML
-    private ComboBox<String> cmbCustomerId;
+    private TextField txtOrderId, txtSearch;
 
     @FXML
-    private ComboBox<String> cmbItemId;
+    private DatePicker datePickerOrderDate;
 
     @FXML
-    private Label lblItemName, lblItemQty, lblItemPrice;
+    private ComboBox<String> comboBoxSupplierId;
 
     @FXML
-    private TextField txtAddToCartQty;
+    private TableView<SupplierOrderDto> tblSupplierOrder;
 
     @FXML
-    private TableView<CartTM> tblCart;
+    private TableColumn<SupplierOrderDto, String> colOrderId, colOrderDate, colSupplierId;
 
     @FXML
-    private TableColumn<?, ?> colItemId;
+    private Button btnAdd, btnUpdate, btnDelete, btnReset, btnSearch;
 
-    @FXML
-    private TableColumn<?, ?> colName;
-
-    @FXML
-    private TableColumn<?, ?> colQuantity;
-
-    @FXML
-    private TableColumn<?, ?> colPrice;
-
-    @FXML
-    private TableColumn<?, ?> colTotal;
-
-    @FXML
-    private TableColumn<?, ?> colAction;
-
-
-    private final CustomersModel customerModel = new CustomersModel();
-
-    private ItemsDto itemsDto = new ItemsDto();
-
-    private int quantity;
-
-    private ObservableList<CartTM> list = FXCollections.observableArrayList();
-
-    private void setCellValueFactory() {
-        colItemId.setCellValueFactory(new PropertyValueFactory<>("itemId"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        colQuantity.setCellValueFactory(new PropertyValueFactory<>("qty"));
-        colPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
-        colAction.setCellValueFactory(new PropertyValueFactory<>("btnRemove"));
-    }
+    private final ObservableList<SupplierOrderDto> supplierOrderList = FXCollections.observableArrayList();
+    private final SupplierOrderBO supplierOrderBO = new SupplierOrderBOImpl();
 
     @FXML
     public void initialize() {
-        try {
-            loadCustomerIds(); // Load customer IDs
-            loadItemIds();     // Load item IDs
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Failed to load data!").show();
-        }
+        // Table Columns Mapping
+        colOrderId.setCellValueFactory(new PropertyValueFactory<>("supplierOrderId"));
+        colOrderDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colSupplierId.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
 
-        setCellValueFactory();
-    }
+        // Load Data
+        loadSupplierOrders();
+        loadSupplierIds();
 
-    private void loadData() {
-        itemsDto.setItemId(cmbItemId.getValue());
-        itemsDto.setName(lblItemName.getText());
-        itemsDto.setUnitPrice(lblItemPrice.getText());
+        // Disable Buttons Initially
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
 
-        Image img = new Image(getClass().getResource("/org/example/ggg/icon/icons8-minimize-48.png").toExternalForm());
-        ImageView view = new ImageView(img);
-        view.setFitHeight(15);
-        view.setFitWidth(15);
-        Button button = new Button();
-        button.setStyle("-fx-background-color: white;");
-        button.setGraphic(view);
+        // Make Order ID field ReadOnly (Primary Key)
+        txtOrderId.setEditable(false);
 
-        button.setOnAction((e) -> {
-            ButtonType yes = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
-            ButtonType no = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-            Optional<ButtonType> type = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
-
-            if(type.orElse(no) == yes) {
-                int selectedIndex = tblCart.getSelectionModel().getSelectedIndex();
-                try{
-                    list.remove(selectedIndex);
-                } catch (Exception exception){
-                    new Alert(Alert.AlertType.INFORMATION,"Select Column And Remove !!").show();
-                    return;
-                }
-                tblCart.refresh();
+        // Table Row Selection Listener
+        tblSupplierOrder.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                populateFields(newSelection);
+                btnUpdate.setDisable(false);
+                btnDelete.setDisable(false);
+                btnAdd.setDisable(true);
+            } else {
+                resetFields();
             }
         });
+    }
 
-        int qty = 0;
+    @FXML
+    private void AddToSupplierOrders() {
+        if (validateInputs()) {
+            SupplierOrderDto supplierOrder = new SupplierOrderDto(null, datePickerOrderDate.getValue().toString(), comboBoxSupplierId.getValue());
+            try {
+                String result = supplierOrderBO.saveSupplierOrder(supplierOrder);
+                showAlert(Alert.AlertType.INFORMATION, "Success", result);
+                loadSupplierOrders();
+                resetFields();
+            } catch (SQLException | ClassNotFoundException e) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to add supplier order: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void UpdateToSupplierOrders() {
+        SupplierOrderDto selectedOrder = tblSupplierOrder.getSelectionModel().getSelectedItem();
+        if (selectedOrder != null && validateInputs()) {
+            selectedOrder.setDate(datePickerOrderDate.getValue().toString());
+            selectedOrder.setSupplierId(comboBoxSupplierId.getValue());
+            try {
+                String result = supplierOrderBO.updateSupplierOrder(selectedOrder);
+                showAlert(Alert.AlertType.INFORMATION, "Success", result);
+                loadSupplierOrders();
+                resetFields();
+            } catch (SQLException | ClassNotFoundException e) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to update supplier order: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void DeleteToSupplierOrders() {
+        SupplierOrderDto selectedOrder = tblSupplierOrder.getSelectionModel().getSelectedItem();
+        if (selectedOrder != null) {
+            try {
+                String result = supplierOrderBO.deleteSupplierOrder(selectedOrder.getSupplierOrderId());
+                showAlert(Alert.AlertType.INFORMATION, "Success", result);
+                loadSupplierOrders();
+                resetFields();
+            } catch (SQLException | ClassNotFoundException e) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete supplier order: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void ResetToSupplierOrders() {
+        tblSupplierOrder.getSelectionModel().clearSelection();
+        txtSearch.clear();
+        tblSupplierOrder.setItems(supplierOrderList);
+        resetFields();
+    }
+
+    @FXML
+    private void SearchSupplierOrders() {
+        String supplierId = txtSearch.getText().trim();
+        if (supplierId.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Please enter Supplier ID to search.");
+            return;
+        }
         try {
-            qty = Integer.parseInt(txtAddToCartQty.getText());
-        } catch (Exception e){
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
-            return;
-        }
-
-        if (Integer.parseInt(txtAddToCartQty.getText()) > Integer.parseInt(lblItemQty.getText())){
-            new Alert(Alert.AlertType.INFORMATION,"Out of Stoke.Please Check Quantity !!").show();
-            return;
-        }
-
-        for (int i = 0; i < tblCart.getItems().size(); i++){
-            if (itemsDto.getItemId().equals(colItemId.getCellData(i))){
-                CartTM tm = list.get(i);
-
-                qty += Integer.parseInt(tm.getQty().trim());
-
-                tm.setQty(String.valueOf(qty));
-                tm.setTotal(String.valueOf(qty * Double.parseDouble(itemsDto.getUnitPrice().trim())));
-
-                tblCart.refresh();
-                return;
+            ObservableList<SupplierOrderDto> filteredList = FXCollections.observableArrayList(supplierOrderBO.getSupplierOrdersBySupplierId(supplierId));
+            if (filteredList.isEmpty()) {
+                showAlert(Alert.AlertType.INFORMATION, "No Results", "No orders found for Supplier ID: " + supplierId);
+            } else {
+                tblSupplierOrder.setItems(filteredList);
             }
-        }
-
-        CartTM tm = new CartTM(itemsDto.getItemId(), itemsDto.getName(), itemsDto.getUnitPrice(), String.valueOf(qty), String.valueOf(qty * Double.parseDouble(itemsDto.getUnitPrice().trim())), button);
-        list.add(tm);
-        tblCart.setItems(list);
-    }
-
-    // Load all customer IDs into cmbCustomerId
-    private void loadCustomerIds() throws SQLException, ClassNotFoundException {
-        ArrayList<String> customerIdsList = customerModel.getAllCustomerIds();
-        ObservableList<String> customerIds = FXCollections.observableArrayList(customerIdsList);
-        cmbCustomerId.setItems(customerIds);
-    }
-
-    // Load all item IDs into cmbItemId
-    private void loadItemIds() throws SQLException, ClassNotFoundException {
-        ArrayList<String> itemIdsList = InventoryModel.getAllItemIds();
-        ObservableList<String> itemIds = FXCollections.observableArrayList(itemIdsList);
-        cmbItemId.setItems(itemIds);
-    }
-
-    // Handle customer selection
-    @FXML
-    public void cmbCustomerOnAction(ActionEvent actionEvent) {
-        String selectedCustomerId = cmbCustomerId.getSelectionModel().getSelectedItem();
-        if (selectedCustomerId != null) {
-            try {
-                String customerName = customerModel.findNameById(selectedCustomerId);
-                lblCustomerName.setText(customerName != null ? customerName : "Name not found");
-            } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
-                lblCustomerName.setText("Error loading name");
-            }
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to search: " + e.getMessage());
         }
     }
 
-    // Handle item selection
-    @FXML
-    public void cmbItemOnAction(ActionEvent actionEvent) {
-        String selectedItemId = cmbItemId.getSelectionModel().getSelectedItem();
-        if (selectedItemId != null) {
-            try {
-                String[] itemDetails = InventoryModel.getItemDetailsById(selectedItemId);
-                if (itemDetails != null) {
-                    lblItemName.setText(itemDetails[0]);    // Item Name
-                    lblItemQty.setText(itemDetails[1]);    // Quantity Available
-                    quantity = Integer.parseInt(itemDetails[1]);
-                    lblItemPrice.setText(itemDetails[2]);  // Unit Price
-                } else {
-                    new Alert(Alert.AlertType.WARNING, "Item details not found!").show();
-                }
-            } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Failed to load item details!").show();
-            }
+    // Populate Fields from Table Row
+    private void populateFields(SupplierOrderDto order) {
+        txtOrderId.setText(order.getSupplierOrderId());
+        datePickerOrderDate.setValue(LocalDate.parse(order.getDate()));
+        comboBoxSupplierId.setValue(order.getSupplierId());
+    }
+
+    // Reset Form Fields
+    private void resetFields() {
+        txtOrderId.clear();
+        datePickerOrderDate.setValue(null);
+        comboBoxSupplierId.setValue(null);
+        btnAdd.setDisable(false);
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
+    }
+
+    // Input Validation
+    private boolean validateInputs() {
+        if (datePickerOrderDate.getValue() == null || comboBoxSupplierId.getValue() == null) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "All fields are required.");
+            return false;
+        }
+        return true;
+    }
+
+    // Show Alerts
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Load Supplier Orders to Table
+    private void loadSupplierOrders() {
+        supplierOrderList.clear();
+        try {
+            supplierOrderList.addAll(supplierOrderBO.getAllSupplierOrders());
+            tblSupplierOrder.setItems(supplierOrderList);
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load supplier orders: " + e.getMessage());
         }
     }
 
-    @FXML
-    public void btnAddToCartOnAction(ActionEvent actionEvent) {
-        // Logic for adding items to the cart can be implemented here
-        loadData();
-    }
-
-    @FXML
-    public void btnResetOnAction(ActionEvent actionEvent) {
-        resetForm();
-    }
-
-    @FXML
-    public void btnPlaceOrderOnAction(ActionEvent actionEvent) {
-        // Logic for placing the order can be implemented here
-
-    }
-
-    // Reset the form after placing the order
-    private void resetForm() {
-        cmbCustomerId.getSelectionModel().clearSelection();
-        cmbItemId.getSelectionModel().clearSelection();
-        tblCart.getItems().clear();
-        lblCustomerName.setText("");
-        lblItemName.setText("");
-        lblItemQty.setText("");
-        lblItemPrice.setText("");
-        txtAddToCartQty.clear();
+    // Load Supplier IDs to ComboBox
+    private void loadSupplierIds() {
+        try {
+            ObservableList<String> supplierIds = FXCollections.observableArrayList(SuppliersModel.getAllSupplierIds());
+            comboBoxSupplierId.setItems(supplierIds);
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load supplier IDs: " + e.getMessage());
+        }
     }
 }

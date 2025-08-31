@@ -52,10 +52,13 @@
       </TableView>
 
       <!-- Buttons -->
+      <Button fx:id="btnSearchl" text="Search" onAction="#SearchReports" layoutX="200" layoutY="150"/>
+
       <Button fx:id="btnAdd" layoutX="109.0" layoutY="412.0" onAction="#AddToReport" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
       <Button fx:id="btnUpdate" layoutX="275.0" layoutY="412.0" onAction="#UpdateToReport" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
       <Button fx:id="btnDelete" layoutX="441.0" layoutY="412.0" onAction="#DeleteToReport" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
       <Button fx:id="btnReset" layoutX="605.0" layoutY="412.0" onAction="#ResetToReport" prefHeight="39.0" prefWidth="133.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />
+      <Button fx:id="btnGenerateReport" layoutX="770.0" layoutY="412.0" onAction="#generateReport" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Generate Report" />
       <TextField fx:id="txtSearch" layoutX="107.0" layoutY="109.0" prefWidth="300.0" promptText="Search..." style="-fx-font-size: 14px;" />
       <Button fx:id="btnSearch" layoutX="437.0" layoutY="107.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Search" onAction="#SearchReports" />
 

@@ -6,8 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.ggg.dto.ItemsDto;
-import org.example.ggg.model.ItemsModel;
+import org.example.ggg.model.ItemsDto;
+import org.example.ggg.dao.impl.ItemsModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

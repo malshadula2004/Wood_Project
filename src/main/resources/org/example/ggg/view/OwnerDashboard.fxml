@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
@@ -48,16 +52,50 @@
 
                 <!-- Black Overlay -->
                 <Rectangle fill="black" height="846.0" layoutX="350.0" layoutY="-5.0" opacity="0.3" width="1052.0" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="174.0" AnchorPane.topAnchor="-5.0" />
-      
-                                      <AnchorPane fx:id="ownerAncerpain" layoutX="350.0" layoutY="57.0" prefHeight="783.0" prefWidth="1052.0">
+
+                                            <AnchorPane fx:id="ownerAncerpain" layoutX="350.0" layoutY="57.0" prefHeight="783.0" prefWidth="1052.0">
                   <children>
                   <ImageView fitHeight="31.0" fitWidth="46.0" layoutX="416.0" layoutY="-16.0" pickOnBounds="true" preserveRatio="true" />
-            
-            
+
+
                     <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="231.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="btnOrderSearch" layoutX="104.0" layoutY="86.0" mnemonicParsing="false" onAction="#orderSearchAcction" opacity="0.46" prefHeight="97.0" prefWidth="193.0" text="Search Orders" />
-                  <Button fx:id="btnPaymentt" layoutX="384.0" layoutY="86.0" mnemonicParsing="false" onAction="#PaymentAcction" opacity="0.58" prefHeight="97.0" prefWidth="193.0" text="Payment" />
-                  <Button fx:id="btnSubOrder" layoutX="672.0" layoutY="86.0" mnemonicParsing="false" onAction="#subOrderAcction" opacity="0.55" prefHeight="97.0" prefWidth="193.0" text="Search supplier Orders " />
+                      <BarChart fx:id="barChart1" layoutX="3.0" layoutY="435.0" prefHeight="348.0" prefWidth="407.0">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis side="LEFT" />
+                          </yAxis>
+                      </BarChart>
+
+                      <BarChart fx:id="barChart2" layoutX="3.0" layoutY="3.0" prefHeight="367.0" prefWidth="397.0">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis side="LEFT" />
+                          </yAxis>
+                      </BarChart>
+
+                      <AnchorPane />
+                      <PieChart fx:id="taskProgressPieChart" layoutX="797.0" layoutY="29.0" prefHeight="232.0" prefWidth="256.0" />
+                  <BarChart fx:id="itemBC" layoutX="385.0" layoutY="3.0" prefHeight="360.0" prefWidth="397.0">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+                  <BarChart fx:id="woodBC" layoutX="400.0" layoutY="444.0" prefHeight="339.0" prefWidth="397.0">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </BarChart>
+
                   </children>
             </AnchorPane>
               <ImageView fx:id="btnSofa" fitHeight="232.0" fitWidth="256.0" layoutX="1304.0" layoutY="256.0" onMouseEntered="#applyShadowEffect" onMouseExited="#removeShadowEffect" pickOnBounds="true" preserveRatio="true" styleClass="image-shadow-effect">

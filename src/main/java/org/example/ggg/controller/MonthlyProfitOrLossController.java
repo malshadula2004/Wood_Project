@@ -5,89 +5,129 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import org.example.ggg.dto.MonthlyProfitOrLossDto;
-import org.example.ggg.model.MonthlyProfitOrLossModel;
+import javafx.scene.layout.AnchorPane;
+import org.example.ggg.model.MonthlyProfitLossDto;
+import org.example.ggg.dao.impl.MonthlyProfitLossModel;
 
 import java.sql.SQLException;
-import java.util.Optional;
 
-public class MonthlyProfitOrLossController {
+class MonthlyProfitOrLossController {
+
+    public AnchorPane MonthlyProfitOrLossPage;
+    @FXML
+    private TextField txtID, txtMonth, txtOrderAmount, txtPayment, txtProfitLoss, txtFinalAmount;
 
     @FXML
-    private TextField txtID, txtOrderTotal, txtPaymentTotal, txtLossOrProfitAmount, txtFinal;
+    private TableView<MonthlyProfitLossDto> tblMonthlyProfitLoss;
 
     @FXML
-    private TableView<MonthlyProfitOrLossDto> tblMonthlyProfitOrLoss;
+    private TableColumn<MonthlyProfitLossDto, String> colID, colMonth;
 
     @FXML
-    private TableColumn<MonthlyProfitOrLossDto, String> colID, colOrderTotal, colPaymentTotal, colLossOrProfitAmount, colFinal;
+    private TableColumn<MonthlyProfitLossDto, Number> colOrderAmount, colPayment, colProfitLoss, colFinalAmount;
 
-    private ObservableList<MonthlyProfitOrLossDto> monthlyProfitOrLossList;
+    private ObservableList<MonthlyProfitLossDto> monthlyProfitLossList;
 
     @FXML
     public void initialize() {
         colID.setCellValueFactory(data -> data.getValue().idProperty());
-        colOrderTotal.setCellValueFactory(data -> data.getValue().orderTotalProperty());
-        colPaymentTotal.setCellValueFactory(data -> data.getValue().paymentTotalProperty());
-        colLossOrProfitAmount.setCellValueFactory(data -> data.getValue().lossOrProfitAmountProperty());
-        colFinal.setCellValueFactory(data -> data.getValue().finalStatusProperty());
+        colMonth.setCellValueFactory(data -> data.getValue().monthProperty());
+        colOrderAmount.setCellValueFactory(data -> data.getValue().orderAmountProperty());
+        colPayment.setCellValueFactory(data -> data.getValue().paymentProperty());
+        colProfitLoss.setCellValueFactory(data -> data.getValue().profitLossProperty());
+        colFinalAmount.setCellValueFactory(data -> data.getValue().finalAmountProperty());
 
-        monthlyProfitOrLossList = FXCollections.observableArrayList();
-        tblMonthlyProfitOrLoss.setItems(monthlyProfitOrLossList);
+        monthlyProfitLossList = FXCollections.observableArrayList();
+        tblMonthlyProfitLoss.setItems(monthlyProfitLossList);
 
-        loadMonthlyProfitOrLossData();
+        loadMonthlyProfitLossData();
     }
 
-    private void loadMonthlyProfitOrLossData() {
+    private void loadMonthlyProfitLossData() {
         try {
-            monthlyProfitOrLossList.clear();
-            monthlyProfitOrLossList.addAll(MonthlyProfitOrLossModel.getAllRecords());
+            monthlyProfitLossList.clear();
+            monthlyProfitLossList.addAll(MonthlyProfitLossModel.getAllRecords());
         } catch (SQLException | ClassNotFoundException e) {
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to load data from the database.");
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to load data from database.");
         }
     }
 
     @FXML
     void addRecord(ActionEvent event) {
         String id = txtID.getText();
-        String orderTotal = txtOrderTotal.getText();
-        String paymentTotal = txtPaymentTotal.getText();
-        String lossOrProfitAmount = txtLossOrProfitAmount.getText();
-        String finalStatus = txtFinal.getText();
+        String month = txtMonth.getText();
+        int orderAmount = Integer.parseInt(txtOrderAmount.getText());
+        double payment = Double.parseDouble(txtPayment.getText());
+        double profitLoss = Double.parseDouble(txtProfitLoss.getText());
+        double finalAmount = Double.parseDouble(txtFinalAmount.getText());
 
-        if (id.isEmpty() || orderTotal.isEmpty() || paymentTotal.isEmpty() || lossOrProfitAmount.isEmpty() || finalStatus.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "All fields are required!");
+        if (id.isEmpty() || month.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "ID and Month fields are required!");
             return;
         }
 
-        MonthlyProfitOrLossDto record = new MonthlyProfitOrLossDto(id, orderTotal, paymentTotal, lossOrProfitAmount, finalStatus);
+        MonthlyProfitLossDto record = new MonthlyProfitLossDto(id, month, orderAmount, payment, profitLoss, finalAmount);
         try {
-            String result = MonthlyProfitOrLossModel.saveRecord(record);
+            String result = MonthlyProfitLossModel.saveRecord(record);
             showAlert(Alert.AlertType.INFORMATION, "Success", result);
             resetFields();
-            loadMonthlyProfitOrLossData();
+            loadMonthlyProfitLossData();
         } catch (SQLException | ClassNotFoundException e) {
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save record.");
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to add record.");
         }
     }
 
     @FXML
     void updateRecord(ActionEvent event) {
-        // Similar to addRecord but calling update method
+        String id = txtID.getText();
+        String month = txtMonth.getText();
+        int orderAmount = Integer.parseInt(txtOrderAmount.getText());
+        double payment = Double.parseDouble(txtPayment.getText());
+        double profitLoss = Double.parseDouble(txtProfitLoss.getText());
+        double finalAmount = Double.parseDouble(txtFinalAmount.getText());
+
+        if (id.isEmpty() || month.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "ID and Month fields are required!");
+            return;
+        }
+
+        MonthlyProfitLossDto record = new MonthlyProfitLossDto(id, month, orderAmount, payment, profitLoss, finalAmount);
+        try {
+            String result = MonthlyProfitLossModel.updateRecord(record);
+            showAlert(Alert.AlertType.INFORMATION, "Success", result);
+            resetFields();
+            loadMonthlyProfitLossData();
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to update record.");
+        }
     }
 
     @FXML
     void deleteRecord(ActionEvent event) {
-        // Similar to addRecord but calling delete method
+        String id = txtID.getText();
+        if (id.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Please enter ID to delete record.");
+            return;
+        }
+
+        try {
+            String result = MonthlyProfitLossModel.deleteRecord(id);
+            showAlert(Alert.AlertType.INFORMATION, "Success", result);
+            resetFields();
+            loadMonthlyProfitLossData();
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to delete record.");
+        }
     }
 
     @FXML
     void resetFields() {
         txtID.clear();
-        txtOrderTotal.clear();
-        txtPaymentTotal.clear();
-        txtLossOrProfitAmount.clear();
-        txtFinal.clear();
+        txtMonth.clear();
+        txtOrderAmount.clear();
+        txtPayment.clear();
+        txtProfitLoss.clear();
+        txtFinalAmount.clear();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

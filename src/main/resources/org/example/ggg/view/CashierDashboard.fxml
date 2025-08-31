@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="OwnerDashboard" prefHeight="976.0" prefWidth="1519.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.CashierDashbordController">
+<AnchorPane fx:id="OwnerDashboard" prefHeight="976.0" prefWidth="1519.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.chairController">
    <children>
       <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="79.0" layoutY="399.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -31,19 +32,23 @@
             <Image url="@../image/75d52c286e57e2a6c0c423147b25286a.jpg" />
          </image>
       </ImageView>
-      <AnchorPane prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+      <AnchorPane layoutY="2.0" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
          <children>
             <!-- ImageView -->
             <ImageView fitHeight="846.0" fitWidth="1052.0" layoutX="350.0" layoutY="-5.0" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="174.0" AnchorPane.topAnchor="-5.0">
                <image>
                   <Image url="@../image/ChatGPT%20Image%20May%203,%202025,%2009_09_20%20AM.png" />
                </image>
+               <effect>
+                  <ColorAdjust brightness="-0.3" />
+               </effect>
             </ImageView>
+
 
             <!-- Black Overlay -->
             <Rectangle fill="black" height="846.0" layoutX="350.0" layoutY="-5.0" opacity="0.3" width="1052.0" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="174.0" AnchorPane.topAnchor="-5.0" />
 
-            <AnchorPane fx:id="ownerAncerpain" layoutX="350.0" layoutY="56.0" prefHeight="789.0" prefWidth="1052.0">
+            <AnchorPane fx:id="ownerAncerpain" layoutX="350.0" layoutY="148.0" prefHeight="783.0" prefWidth="1052.0">
                <children>
                   <ImageView fitHeight="31.0" fitWidth="46.0" layoutX="416.0" layoutY="-16.0" pickOnBounds="true" preserveRatio="true" />
 
@@ -129,6 +134,32 @@
 
                </items>
             </MenuButton>
+            <Button fx:id="btnPayment" layoutX="44.0" layoutY="499.0" mnemonicParsing="false" onAction="#PaymentAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Payment">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <effect>
+                  <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+               </effect>
+            </Button>
+            <Button fx:id="btnReport" layoutX="44.0" layoutY="552.0" mnemonicParsing="false" onAction="#ReportAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Report">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <effect>
+                  <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
+               </effect>
+            </Button>
+            <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="76.0" layoutY="500.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/cash-payment.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="73.0" layoutY="556.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/report.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
 
@@ -205,22 +236,9 @@
             <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
          </effect>
       </Button>
-      <Button fx:id="btnReport" layoutX="42.0" layoutY="704.0" mnemonicParsing="false" onAction="#ReportAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Report">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-         <effect>
-            <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
-         </effect>
-      </Button>
       <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="80.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/log.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="84.0" layoutY="705.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../image/report.png" />
          </image>
       </ImageView>
       <Button fx:id="btnSupplierOrder" layoutX="42.0" layoutY="450.0" mnemonicParsing="false" onAction="#SuplierOrderAction" prefHeight="38.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="            Supplier Order">
@@ -236,46 +254,7 @@
             <Image url="@../image/supplier.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnTaskAssignment" layoutX="42.0" layoutY="500.0" mnemonicParsing="false" onAction="#TaskAssignmentAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="              TaskAssignment">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-         <effect>
-            <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
-         </effect>
-      </Button>
-      <ImageView fitHeight="31.0" fitWidth="38.0" layoutX="84.0" layoutY="505.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../image/assignment.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="btnAttendance" layoutX="42.0" layoutY="550.0" mnemonicParsing="false" onAction="#AttendenceAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Attendance">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-         <effect>
-            <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
-         </effect>
-      </Button>
       <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="341.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fitHeight="31.0" fitWidth="38.0" layoutX="84.0" layoutY="555.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../image/attendance.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="btnVehical" layoutX="42.0" layoutY="600.0" mnemonicParsing="false" onAction="#vehicalAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="      Vehical Details">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-         <effect>
-            <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
-         </effect>
-      </Button>
-      <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="84.0" layoutY="601.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../image/van.png" />
-         </image>
-      </ImageView>
       <Button fx:id="btnDelivery" layoutX="42.0" layoutY="398.0" mnemonicParsing="false" onAction="#DeliveryAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Delivery">
          <font>
             <Font name="System Bold" size="15.0" />
@@ -284,24 +263,16 @@
             <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
          </effect>
       </Button>
-      <Button fx:id="btnPayment" layoutX="42.0" layoutY="651.0" mnemonicParsing="false" onAction="#PaymentAction" prefHeight="40.0" prefWidth="242.0" style="-fx-background-color: fed8b0; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 0; -fx-background-radius: 50;" text="Payment">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-         <effect>
-            <DropShadow color="BLACK" offsetX="0" offsetY="3" radius="5" />
-         </effect>
-      </Button>
-      <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="80.0" layoutY="652.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../image/cash-payment.png" />
-         </image>
-      </ImageView>
       <Text layoutX="830.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WOOD HUB">
          <font>
             <Font name="Agency FB Bold" size="46.0" />
          </font>
       </Text>
+      <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="1062.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/503849.png" />
+         </image>
+      </ImageView>
       <ImageView fitHeight="46.0" fitWidth="59.0" layoutX="1123.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/log-out.png" />

@@ -1,20 +1,12 @@
 package org.example.ggg.controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.ggg.dto.PurchaseOrdersDto;
-import org.example.ggg.model.PurchaseOrdersModel;
-
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import org.example.ggg.model.PurchaseOrdersDto;
 
 public class OrderSearchController {
 

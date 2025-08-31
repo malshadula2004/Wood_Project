@@ -5,8 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.ggg.dto.EmployeesDto;
-import org.example.ggg.model.EmployeesModel;
+import org.example.ggg.model.EmployeesDto;
+import org.example.ggg.dao.impl.EmployeesModel;
 
 import java.sql.SQLException;
 
@@ -112,13 +112,12 @@ public class EmployeesController {
 
     @FXML
     private void SearchEmployee() {
-        String searchText = txtSearch.getText().trim(); // TextField එකේ පූර්ණ කර ඇති value එක ගන්න
+        String searchText = txtSearch.getText().trim();
         if (searchText.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Please enter an ID or Name to search."); // හිස් වුවහොත් warning alert එකක්
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Please enter an ID or Name to search.");
             return;
         }
 
-        // Filter employees based on searchText
         ObservableList<EmployeesDto> filteredList = FXCollections.observableArrayList();
         for (EmployeesDto employee : employeeList) {
             if (employee.getEmployeesId().equalsIgnoreCase(searchText) ||
@@ -127,13 +126,13 @@ public class EmployeesController {
             }
         }
 
-        // Check if results are empty
         if (filteredList.isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION, "No Results", "No employee found for the given ID or Name."); // ගැලපෙන විශේෂයක් නැති නම්
+            showAlert(Alert.AlertType.INFORMATION, "No Results", "No employee found for the given ID or Name.");
         } else {
             tblEmployees.setItems(filteredList);
         }
     }
+
     private void populateFields(EmployeesDto employee) {
         txtID.setText(employee.getEmployeesId());
         txtName.setText(employee.getName());
@@ -160,8 +159,13 @@ public class EmployeesController {
             showAlert(Alert.AlertType.WARNING, "Validation Error", "Role cannot be empty.");
             return false;
         }
-        if (txtContactInfo.getText().isEmpty()) {
+        String contactInfo = txtContactInfo.getText();
+        if (contactInfo.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Validation Error", "Contact Info cannot be empty.");
+            return false;
+        }
+        if (!contactInfo.matches("\\d{10}")) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Contact Info must be a 10-digit number.");
             return false;
         }
         return true;

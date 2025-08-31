@@ -3,188 +3,242 @@ package org.example.ggg.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import org.example.ggg.dto.WoodInventoryDto;
-import org.example.ggg.model.WoodInventoryModel;
+import org.example.ggg.model.WoodInventoryDto;
+import org.example.ggg.dao.impl.WoodInventoryModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class WoodInventoryController {
 
-    // UI Components
-    public TextField txtSupplierOrderID;
-    public TextField txtWoodID;
-    public TextField txtWoodLength;
-    public TableView<WoodInventoryDto> tblInventory;
-    public TableColumn<WoodInventoryDto, String> colSupplierOrderID;
-    public TableColumn<WoodInventoryDto, String> colWoodID;
-    public TableColumn<WoodInventoryDto, Double> colWoodLength;
-    public Button btnAdd;
-    public Button btnUpdate;
-    public Button btnDelete;
-    public Button btnReset;
-    public AnchorPane InventoryPage;
     public Button btnSearch;
-    public TextField txtSearch;
+    public AnchorPane WoodInventoryPage;
+    public TextField txtprice1;
 
+    @FXML
+    private TextField txtSearch;
+
+    @FXML
+    private ComboBox<String> cmbSupplierOrderID;
+
+    @FXML
+    private ComboBox<String> cmbWoodID;
+
+    @FXML
+    private TextField txtWoodName;
+
+    @FXML
+    private TextField txtWoodLength;
+
+    @FXML
+    private TextField txtID;
+
+    @FXML
+    private TableView<WoodInventoryDto> tblInventory;
+
+    @FXML
+    private TableColumn<WoodInventoryDto, String> colID;
+
+    @FXML
+    private TableColumn<WoodInventoryDto, String> colSupplierOrderID;
+
+    @FXML
+    private TableColumn<WoodInventoryDto, String> colWoodID;
+
+    @FXML
+    private TableColumn<WoodInventoryDto, String> colWoodName;
+
+    @FXML
+    private TableColumn<WoodInventoryDto, String> colWoodLength;
+
+    @FXML
+    private Button btnAdd;
+
+    @FXML
+    private Button btnUpdate;
+
+    @FXML
+    private Button btnDelete;
+
+    @FXML
+    private Button btnReset;
+
+    @FXML
     public void initialize() {
+        // Initialize Table Columns
+        colID.setCellValueFactory(new PropertyValueFactory<>("id"));
         colSupplierOrderID.setCellValueFactory(new PropertyValueFactory<>("supplierOrderId"));
         colWoodID.setCellValueFactory(new PropertyValueFactory<>("woodId"));
+        colWoodName.setCellValueFactory(new PropertyValueFactory<>("woodName"));
         colWoodLength.setCellValueFactory(new PropertyValueFactory<>("woodLength"));
 
-        resetPage();
-
-        tblInventory.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                btnUpdate.setDisable(false);
-                btnDelete.setDisable(false);
-                btnAdd.setDisable(true);
-
-                txtSupplierOrderID.setText(newValue.getSupplierOrderId());
-                txtWoodID.setText(newValue.getWoodId());
-                txtWoodLength.setText(String.valueOf(newValue.getWoodLength()));
-            } else {
-                btnUpdate.setDisable(true);
-                btnDelete.setDisable(true);
-                btnAdd.setDisable(false);
-
-                clearFields();
-            }
-        });
-    }
-
-    private void resetPage() {
         try {
+            loadSupplierOrderIDs();
+            loadWoodIDs();
             loadInventoryTable();
-            clearFields();
-            btnAdd.setDisable(false);
-            btnUpdate.setDisable(true);
-            btnDelete.setDisable(true);
+
+            cmbWoodID.valueProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    populateWoodDetails(newValue);
+                } else {
+                    txtWoodName.clear();
+                    txtprice1.clear();
+                }
+            });
         } catch (SQLException | ClassNotFoundException e) {
-            showAlert("Error", "Failed to reset page: " + e.getMessage());
+            e.printStackTrace();
+            showAlert("Error", "Failed to initialize data!", Alert.AlertType.ERROR);
         }
     }
 
-    public void loadInventoryTable() throws SQLException, ClassNotFoundException {
+    private void loadSupplierOrderIDs() throws SQLException, ClassNotFoundException {
+        ArrayList<String> supplierOrderIDs = WoodInventoryModel.getSupplierOrderIDs();
+        cmbSupplierOrderID.setItems(FXCollections.observableArrayList(supplierOrderIDs));
+    }
+
+    private void loadWoodIDs() throws SQLException, ClassNotFoundException {
+        ArrayList<String> woodIDs = WoodInventoryModel.getWoodIDs();
+        cmbWoodID.setItems(FXCollections.observableArrayList(woodIDs));
+    }
+
+    private void loadInventoryTable() throws SQLException, ClassNotFoundException {
         ArrayList<WoodInventoryDto> inventoryList = WoodInventoryModel.getAllInventory();
-        ObservableList<WoodInventoryDto> observableList = FXCollections.observableArrayList(inventoryList);
-        tblInventory.setItems(observableList);
+        ObservableList<WoodInventoryDto> data = FXCollections.observableArrayList(inventoryList);
+        tblInventory.setItems(data);
     }
 
-    public void AddToInventory(ActionEvent actionEvent) {
+    private void populateWoodDetails(String woodId) {
         try {
-            if (!validateInputs()) return;
+            String woodName = WoodInventoryModel.getWoodNameById(woodId);
+            Double unitPrice = WoodInventoryModel.getWoodUnitPriceById(woodId);
 
-            WoodInventoryDto dto = new WoodInventoryDto(
-                    txtSupplierOrderID.getText(),
-                    txtWoodID.getText(),
-                    Double.parseDouble(txtWoodLength.getText())
-            );
+            if (woodName != null) {
+                txtWoodName.setText(woodName);
+            } else {
+                txtWoodName.clear();
+                showAlert("Warning", "No wood name found for the selected ID!", Alert.AlertType.WARNING);
+            }
 
-            boolean isAdded = WoodInventoryModel.addInventory(dto);
-            showAlert("Add Inventory", isAdded ? "Successfully added!" : "Failed to add.");
-            resetPage();
+            if (unitPrice != null) {
+                txtprice1.setText(String.valueOf(unitPrice));
+            } else {
+                txtprice1.clear();
+                showAlert("Warning", "No price found for the selected wood ID!", Alert.AlertType.WARNING);
+            }
         } catch (SQLException | ClassNotFoundException e) {
-            handleException(e);
+            e.printStackTrace();
+            showAlert("Error", "Failed to fetch wood details!", Alert.AlertType.ERROR);
         }
     }
 
-    public void UpdateToInventory(ActionEvent actionEvent) {
+    @FXML
+    void AddToInventory(ActionEvent event) {
         try {
-            if (!validateInputs()) return;
+            String supplierOrderId = cmbSupplierOrderID.getValue();
+            String woodId = cmbWoodID.getValue();
+            String woodName = txtWoodName.getText();
+            String woodLength = txtWoodLength.getText();
+            String price = txtprice1.getText();
 
-            WoodInventoryDto dto = new WoodInventoryDto(
-                    txtSupplierOrderID.getText(),
-                    txtWoodID.getText(),
-                    Double.parseDouble(txtWoodLength.getText())
-            );
+            if (supplierOrderId == null || woodId == null || woodName.isEmpty() || woodLength.isEmpty() || price.isEmpty()) {
+                showAlert("Error", "All fields are required!", Alert.AlertType.WARNING);
+                return;
+            }
 
-            boolean isUpdated = WoodInventoryModel.updateInventory(dto);
-            showAlert("Update Inventory", isUpdated ? "Successfully updated!" : "Failed to update.");
-            resetPage();
-        } catch (SQLException | ClassNotFoundException e) {
-            handleException(e);
+            boolean isAdded = WoodInventoryModel.addInventory(new WoodInventoryDto(null, supplierOrderId, woodId, woodName, woodLength, price));
+            showAlert("Success", isAdded ? "Inventory added successfully!" : "Failed to add inventory!", isAdded ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+            loadInventoryTable();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to add inventory!", Alert.AlertType.ERROR);
+        }
+    }
+
+    public void pdateToInventory(ActionEvent actionEvent) {
+        try {
+            String id = txtID.getText();
+            String supplierOrderId = cmbSupplierOrderID.getValue();
+            String woodId = cmbWoodID.getValue();
+            String woodName = txtWoodName.getText();
+            String woodLength = txtWoodLength.getText();
+            String price = txtprice1.getText();
+
+            if (id.isEmpty() || supplierOrderId == null || woodId == null || woodName.isEmpty() || woodLength.isEmpty() || price.isEmpty()) {
+                showAlert("Error", "All fields are required!", Alert.AlertType.WARNING);
+                return;
+            }
+
+            boolean isUpdated = WoodInventoryModel.updateInventory(new WoodInventoryDto(id, supplierOrderId, woodId, woodName, woodLength, price));
+            showAlert("Success", isUpdated ? "Inventory updated successfully!" : "Failed to update inventory!", isUpdated ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+            loadInventoryTable();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to update inventory!", Alert.AlertType.ERROR);
         }
     }
 
     public void DeleteToInventory(ActionEvent actionEvent) {
         try {
-            String woodId = txtWoodID.getText().trim();
-            if (woodId.isEmpty()) {
-                showAlert("Validation Error", "Please enter a Wood ID to delete.");
+            String id = txtID.getText();
+
+            if (id.isEmpty()) {
+                showAlert("Error", "Please enter the inventory ID!", Alert.AlertType.WARNING);
                 return;
             }
 
-            boolean isDeleted = Boolean.parseBoolean(WoodInventoryModel.deleteInventory(woodId));
-            showAlert("Delete Inventory", isDeleted ? "Failed to delete. Dependent data may exist" : "Successfully deleted!.");
-            resetPage();
-        } catch (SQLException | ClassNotFoundException e) {
-            handleException(e);
+            boolean isDeleted = WoodInventoryModel.deleteInventory(id);
+            showAlert("Success", isDeleted ? "Inventory deleted successfully!" : "Failed to delete inventory!", isDeleted ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+            loadInventoryTable();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to delete inventory!", Alert.AlertType.ERROR);
         }
     }
-
 
     public void ResetToInventory(ActionEvent actionEvent) {
-        resetPage();
-    }
-
-    private boolean validateInputs() {
-        try {
-            Double.parseDouble(txtWoodLength.getText());
-        } catch (NumberFormatException e) {
-            showAlert("Validation Error", "Please enter a valid number for Wood Length.");
-            return false;
-        }
-
-        if (txtSupplierOrderID.getText().isEmpty() || txtWoodID.getText().isEmpty()) {
-            showAlert("Validation Error", "All fields must be filled.");
-            return false;
-        }
-
-        return true;
-    }
-
-    private void clearFields() {
-        txtSupplierOrderID.clear();
-        txtWoodID.clear();
+        txtID.clear();
+        cmbSupplierOrderID.getSelectionModel().clearSelection();
+        cmbWoodID.getSelectionModel().clearSelection();
+        txtWoodName.clear();
         txtWoodLength.clear();
-        tblInventory.getSelectionModel().clearSelection();
+        txtprice1.clear();
+        txtSearch.clear();
     }
 
-    private void handleException(Exception e) {
-        showAlert("Error", "An error occurred: " + e.getMessage());
-        e.printStackTrace();
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
-        alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.show();
     }
 
     public void SearchWood(ActionEvent actionEvent) {
         try {
-            String woodId = txtSearch.getText().trim();
-            if (woodId.isEmpty()) {
-                showAlert("Validation Error", "Please enter a Wood ID to search.");
+            String searchText = txtSearch.getText().trim();
+
+            if (searchText.isEmpty()) {
+                // Reload all inventory if the search field is empty
+                loadInventoryTable();
                 return;
             }
 
-            WoodInventoryDto dto = WoodInventoryModel.getInventoryByID(woodId);
+            // Fetch matching inventory records based on WoodID or WoodName
+            ArrayList<WoodInventoryDto> searchResults = WoodInventoryModel.searchInventoryByIdOrName(searchText);
 
-            if (dto != null) {
-                ObservableList<WoodInventoryDto> observableList = FXCollections.observableArrayList(dto);
-                tblInventory.setItems(observableList);
+            if (searchResults.isEmpty()) {
+                showAlert("Info", "No records found for the search query!", Alert.AlertType.INFORMATION);
+                tblInventory.getItems().clear(); // Clear the table if no records found
             } else {
-                showAlert("Search Result", "No data found for Wood ID: " + woodId);
+                ObservableList<WoodInventoryDto> data = FXCollections.observableArrayList(searchResults);
+                tblInventory.setItems(data); // Update the table with search results
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            handleException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to search inventory!", Alert.AlertType.ERROR);
         }
     }
 

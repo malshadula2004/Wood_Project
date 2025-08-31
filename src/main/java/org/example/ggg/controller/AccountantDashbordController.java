@@ -171,7 +171,7 @@ public class AccountantDashbordController {
     }
 
     public void customerAction(ActionEvent actionEvent) {
-        navigateTo("/org/example/ggg/view/Customer.fxml");
+        navigateTo("/org/example/ggg/view/Employees_Salary.fxml");
     }
 
     public void woodsActtion(ActionEvent actionEvent) {
@@ -330,7 +330,7 @@ public class AccountantDashbordController {
     }
 
     public void ESAction(ActionEvent actionEvent) {
-        navigateTo("/org/example/ggg/view/MonthlyProfitOrLoss.fxml");
+        navigateTo("/org/example/ggg/view/MonthlyProfitLoss.fxml");
     }
 }
 

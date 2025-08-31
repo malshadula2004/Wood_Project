@@ -14,7 +14,7 @@
 
 <AnchorPane fx:id="purchaseOrderPage" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #f9f9f9;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.WoodOrderController">
    <children>
-      <VBox prefHeight="500.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="408.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="92.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox spacing="10.0">
                <children>
@@ -22,32 +22,19 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
-                              <Label prefWidth="150.0" text="Order Id">
+                              <Label opacity="0.0" prefWidth="150.0" text="Order Id">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblOrderId" prefWidth="300.0" text="1">
-                                 <font>
-                                    <Font name="Calibri" size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <Label prefWidth="150.0" text="Order Date">
-                                 <font>
-                                    <Font name="Calibri" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="orderDate" prefWidth="150.0" text="2099-01-01">
+                              <Label fx:id="lblOrderId" opacity="0.0" prefWidth="300.0" text="1">
                                  <font>
                                     <Font name="Calibri" size="14.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-border-color: #000; -fx-border-width: 0 0 1px 0;">
@@ -155,7 +142,7 @@
                   </HBox>
                </children>
             </VBox>
-            <TableView fx:id="tblCart" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tblCart" prefHeight="242.0" prefWidth="509.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="colItemId" prefWidth="75.0" text="Item Id" />
                   <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />

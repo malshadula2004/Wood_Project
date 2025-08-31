@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -13,27 +17,19 @@
 <AnchorPane fx:id="AttendancePage" prefHeight="688.0" prefWidth="994.0" style="-fx-background-color: #f9f9f9;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.AttendanceController">
    <children>
       <!-- Search Bar -->
-      <HBox layoutX="109.0" layoutY="50.0" spacing="10.0">
-         <children>
-            <TextField fx:id="txtSearch" prefWidth="200.0" promptText="Search by Attendance ID or Employee ID" style="-fx-font-size: 14px;" />
-            <Button fx:id="btnSearch" onAction="#SearchAttendance" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Search" />
-         </children>
-      </HBox>
+      <HBox layoutX="109.0" layoutY="50.0" spacing="10.0" />
 
-      <!-- Labels and TextFields -->
+      <!-- Labels and Inputs -->
       <VBox layoutX="109.0" layoutY="182.0" spacing="10.0" style="-fx-padding: 10; -fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.1, 0, 2);">
          <children>
-            <HBox spacing="10.0">
-               <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Attendance ID:" />
-               <TextField fx:id="txtAttendanceId" prefWidth="200.0" style="-fx-font-size: 14px;" />
-            </HBox>
+            <HBox spacing="10.0" />
             <HBox spacing="10.0">
                <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Employee ID:" />
-               <TextField fx:id="txtEmployeeId" prefWidth="200.0" style="-fx-font-size: 14px;" />
+               <ComboBox fx:id="cmbEmployeeId" prefWidth="200.0" style="-fx-font-size: 14px;" />
             </HBox>
             <HBox spacing="10.0">
                <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Date:" />
-               <TextField fx:id="txtDate" prefWidth="200.0" style="-fx-font-size: 14px;" />
+               <DatePicker fx:id="datePickerDate" prefWidth="200.0" style="-fx-font-size: 14px;" />
             </HBox>
             <HBox spacing="10.0">
                <Label prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Status:" />
@@ -47,7 +43,7 @@
       </VBox>
 
       <!-- TableView -->
-      <TableView fx:id="tblAttendance" layoutX="107.0" layoutY="467.0" prefHeight="303.0" prefWidth="760.0" style="-fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;">
+      <TableView fx:id="tblAttendance" layoutX="109.0" layoutY="461.0" prefHeight="305.0" prefWidth="760.0" style="-fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;">
          <columns>
             <TableColumn fx:id="colAttendanceId" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Attendance ID" />
             <TableColumn fx:id="colEmployeeId" prefWidth="150.0" style="-fx-alignment: CENTER; -fx-font-size: 14px;" text="Employee ID" />
@@ -58,17 +54,40 @@
       </TableView>
 
       <!-- Action Buttons -->
-      <HBox layoutX="109.0" layoutY="412.0" spacing="20.0">
-         <Button fx:id="btnAdd" onAction="#AddToAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
-         <Button fx:id="btnUpdate" onAction="#UpdateToAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
-         <Button fx:id="btnDelete" onAction="#DeleteToAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
-         <Button fx:id="btnReset" onAction="#ResetAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />
-      </HBox>
+      <HBox layoutX="109.0" layoutY="412.0" spacing="20.0" />
 
       <Label layoutX="419.0" layoutY="28.0" text="Attendance" textFill="#7c1616">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
+      <TextField fx:id="txtSearch" layoutX="109.0" layoutY="118.0" prefWidth="200.0" promptText="Search by Attendance ID or Employee ID" style="-fx-font-size: 14px;" />
+      <Button fx:id="btnSearch" layoutX="341.0" layoutY="118.0" onAction="#SearchAttendance" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Search" />
+      <TextField fx:id="txtAttendanceId" layoutX="676.0" layoutY="201.0" opacity="0.0" prefWidth="200.0" style="-fx-font-size: 14px;" />
+      <Label layoutX="690.0" layoutY="137.0" opacity="0.0" prefWidth="100.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Attendance ID:" />
+      <Button fx:id="btnReset" layoutX="690.0" layoutY="393.0" onAction="#resetAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />
+      <Button fx:id="btnDelete" layoutX="497.0" layoutY="393.0" onAction="#DeleteToAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
+      <Button fx:id="btnUpdate" layoutX="304.0" layoutY="393.0" onAction="#UpdateToAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
+      <Button fx:id="btnAdd" layoutX="109.0" layoutY="393.0" onAction="#AddToAttendance" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
+      <ImageView fitHeight="30.0" fitWidth="39.0" layoutX="137.0" layoutY="399.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/add.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="326.0" layoutY="397.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/changes.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="522.0" layoutY="399.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/bin.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="710.0" layoutY="399.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/clean.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

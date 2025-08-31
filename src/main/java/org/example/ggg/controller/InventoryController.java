@@ -6,23 +6,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.ggg.dto.InventoryDto;
-import org.example.ggg.model.InventoryModel;
+import org.example.ggg.model.InventoryDto;
+import org.example.ggg.dao.impl.InventoryModel;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class InventoryController {
 
-    public Button btnSearch;
     @FXML
-    private TextField txtSearch;
+    private ComboBox<String> cmbItemID;
 
     @FXML
-    private TextField txtItemID;
-
-    @FXML
-    private TextField txtSupplierOrderID;
+    private ComboBox<String> cmbSupplierOrderID;
 
     @FXML
     private TextField txtQuantityAvailable;
@@ -59,12 +54,13 @@ public class InventoryController {
         colSupplierOrderID.setCellValueFactory(new PropertyValueFactory<>("supplierOrderId"));
         colQuantityAvailable.setCellValueFactory(new PropertyValueFactory<>("quantityAvailable"));
 
+        loadComboBoxData();
         loadInventoryData();
 
         tblInventory.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                txtItemID.setText(newValue.getItemId());
-                txtSupplierOrderID.setText(newValue.getSupplierOrderId());
+                cmbItemID.setValue(newValue.getItemId());
+                cmbSupplierOrderID.setValue(newValue.getSupplierOrderId());
                 txtQuantityAvailable.setText(newValue.getQuantityAvailable());
                 btnAdd.setDisable(true);
                 btnUpdate.setDisable(false);
@@ -76,135 +72,122 @@ public class InventoryController {
     }
 
     @FXML
-    public void AddToInventory(ActionEvent actionEvent) {
+    private void AddToInventory(ActionEvent event) {
         if (validateInputs()) {
             InventoryDto newItem = new InventoryDto(
-                    txtItemID.getText(),
-                    txtSupplierOrderID.getText(),
+                    cmbItemID.getValue(),
+                    cmbSupplierOrderID.getValue(),
                     txtQuantityAvailable.getText()
             );
             try {
                 boolean isAdded = InventoryModel.addInventory(newItem);
                 if (isAdded) {
-                    showAlert("Success", "Item successfully added to inventory!");
+                    showAlert("Success", "Item successfully added to inventory!", Alert.AlertType.INFORMATION);
                     loadInventoryData();
+                    resetPage();
                 } else {
-                    showAlert("Error", "Failed to add item!");
+                    showAlert("Error", "Failed to add item!", Alert.AlertType.ERROR);
                 }
             } catch (SQLException | ClassNotFoundException e) {
-                showAlert("Database Error", e.getMessage());
+                showAlert("Database Error", e.getMessage(), Alert.AlertType.ERROR);
             }
-            resetPage();
         }
     }
 
     @FXML
-    public void UpdateToInventory(ActionEvent actionEvent) {
+    private void UpdateToInventory(ActionEvent event) {
         InventoryDto selectedItem = tblInventory.getSelectionModel().getSelectedItem();
         if (selectedItem != null && validateInputs()) {
             InventoryDto updatedItem = new InventoryDto(
-                    txtItemID.getText(),
-                    txtSupplierOrderID.getText(),
+                    cmbItemID.getValue(),
+                    cmbSupplierOrderID.getValue(),
                     txtQuantityAvailable.getText()
             );
             try {
                 boolean isUpdated = InventoryModel.updateInventory(updatedItem);
                 if (isUpdated) {
-                    showAlert("Success", "Item successfully updated!");
+                    showAlert("Success", "Item successfully updated!", Alert.AlertType.INFORMATION);
                     loadInventoryData();
+                    resetPage();
                 } else {
-                    showAlert("Error", "Failed to update item!");
+                    showAlert("Error", "Failed to update item!", Alert.AlertType.ERROR);
                 }
             } catch (SQLException | ClassNotFoundException e) {
-                showAlert("Database Error", e.getMessage());
+                showAlert("Database Error", e.getMessage(), Alert.AlertType.ERROR);
             }
-            resetPage();
         }
     }
 
     @FXML
-    public void DeleteToInventory(ActionEvent actionEvent) {
+    private void DeleteToInventory(ActionEvent event) {
         InventoryDto selectedItem = tblInventory.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             try {
                 boolean isDeleted = InventoryModel.deleteInventory(selectedItem.getItemId());
                 if (isDeleted) {
-                    showAlert("Success", "Item successfully deleted!");
+                    showAlert("Success", "Item successfully deleted!", Alert.AlertType.INFORMATION);
                     loadInventoryData();
+                    resetPage();
                 } else {
-                    showAlert("Error", "Failed to delete item!");
+                    showAlert("Error", "Failed to delete item!", Alert.AlertType.ERROR);
                 }
             } catch (SQLException | ClassNotFoundException e) {
-                showAlert("Database Error", e.getMessage());
+                showAlert("Database Error", e.getMessage(), Alert.AlertType.ERROR);
             }
-            resetPage();
         }
     }
 
     @FXML
-    public void ResetToInventory(ActionEvent actionEvent) {
+    private void ResetToInventory(ActionEvent event) {
         resetPage();
     }
 
-    private void resetPage() {
-        txtItemID.clear();
-        txtSupplierOrderID.clear();
-        txtQuantityAvailable.clear();
-        txtSearch.clear();
-        tblInventory.getSelectionModel().clearSelection();
-        btnAdd.setDisable(false);
-        btnUpdate.setDisable(true);
-        btnDelete.setDisable(true);
+    private void loadComboBoxData() {
+        try {
+            cmbItemID.setItems(FXCollections.observableArrayList(InventoryModel.getAllItemIds()));
+            cmbSupplierOrderID.setItems(FXCollections.observableArrayList(InventoryModel.getAllSupplierOrderIDs()));
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert("Database Error", e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void loadInventoryData() {
+        inventoryList.clear();
+        try {
+            inventoryList.addAll(InventoryModel.getAllInventory());
+            tblInventory.setItems(inventoryList);
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert("Database Error", e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     private boolean validateInputs() {
-        if (txtItemID.getText().isEmpty() || txtSupplierOrderID.getText().isEmpty() || txtQuantityAvailable.getText().isEmpty()) {
-            showAlert("Validation Error", "All fields are required!");
+        if (cmbItemID.getValue() == null || cmbSupplierOrderID.getValue() == null || txtQuantityAvailable.getText().isEmpty()) {
+            showAlert("Validation Error", "All fields are required!", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (!txtQuantityAvailable.getText().matches("\\d+")) {
+            showAlert("Validation Error", "Quantity must be numeric!", Alert.AlertType.WARNING);
             return false;
         }
         return true;
     }
 
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+    private void showAlert(String title, String content, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
     }
 
-    private void loadInventoryData() {
-        inventoryList.clear();
-        try {
-            ArrayList<InventoryDto> allInventory = InventoryModel.getAllInventory();
-            inventoryList.addAll(allInventory);
-            tblInventory.setItems(inventoryList);
-        } catch (SQLException | ClassNotFoundException e) {
-            showAlert("Database Error", e.getMessage());
-        }
-    }
-
-    @FXML
-    public void SearchInventory(ActionEvent actionEvent) {
-        String itemId = txtSearch.getText().trim();
-
-        if (itemId.isEmpty()) {
-            showAlert("Validation Error", "Please enter an Item ID to search!");
-            return;
-        }
-
-        try {
-            ArrayList<InventoryDto> searchResults = InventoryModel.searchInventory(itemId);
-
-            inventoryList.clear();
-            if (searchResults.isEmpty()) {
-                showAlert("No Results", "No inventory data found for the given Item ID.");
-            } else {
-                inventoryList.addAll(searchResults);
-                tblInventory.setItems(inventoryList);
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            showAlert("Database Error", e.getMessage());
-        }
+    private void resetPage() {
+        cmbItemID.getSelectionModel().clearSelection();
+        cmbSupplierOrderID.getSelectionModel().clearSelection();
+        txtQuantityAvailable.clear();
+        tblInventory.getSelectionModel().clearSelection();
+        btnAdd.setDisable(false);
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
     }
 }

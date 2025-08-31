@@ -6,8 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import org.example.ggg.dto.WoodDto;
-import org.example.ggg.model.WoodModel;
+import org.example.ggg.model.WoodDto;
+import org.example.ggg.dao.impl.WoodModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

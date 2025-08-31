@@ -1,130 +1,190 @@
 package org.example.ggg.controller;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import org.example.ggg.dto.DeliveryDto;
-import org.example.ggg.model.DeliveryModel;
+import org.example.ggg.model.DeliveryDto;
+import org.example.ggg.dao.impl.DeliveryModel;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class DeliveryController {
 
-    // UI Components
-    public TextField txtId;
-    public TextField txtPurchaseOrderId;
-    public TextField txtDeliveryDate;
-    public TextField txtDriverId; // Corrected to match the FXML and DTO field
-    public TextField txtDeliveryStatus;
-    public TableView<DeliveryDto> tblDelivery;
-    public TableColumn<DeliveryDto, String> colDeliveryId;
-    public TableColumn<DeliveryDto, String> colPurchaseOrderId;
-    public TableColumn<DeliveryDto, String> colDeliveryDate;
-    public TableColumn<DeliveryDto, String> colDriverId; // Corrected
-    public TableColumn<DeliveryDto, String> colDeliveryStatus;
-    public Button btnAdd;
-    public Button btnUpdate;
-    public Button btnDelete;
     public Button btnReset;
-    public AnchorPane DeliveryPage;
-    public TextField txtSearch;
-    public Button btnSearch;
+    @FXML
+    private TextField txtId;
 
+    @FXML
+    private ComboBox<String> cmbPurchaseOrderId;
+
+    @FXML
+    private DatePicker dpDeliveryDate;
+
+    @FXML
+    private ComboBox<String> cmbDriverId;
+
+    @FXML
+    private TextField txtDeliveryStatus;
+
+    @FXML
+    private TableView<DeliveryDto> tblDelivery;
+
+    @FXML
+    private TableColumn<DeliveryDto, String> colDeliveryId;
+
+    @FXML
+    private TableColumn<DeliveryDto, String> colPurchaseOrderId;
+
+    @FXML
+    private TableColumn<DeliveryDto, String> colDeliveryDate;
+
+    @FXML
+    private TableColumn<DeliveryDto, String> colDriverId;
+
+    @FXML
+    private TableColumn<DeliveryDto, String> colDeliveryStatus;
+
+    @FXML
+    private Button btnAdd;
+
+    @FXML
+    private Button btnUpdate;
+
+    @FXML
+    private Button btnDelete;
+
+    @FXML
+    private TextField txtSearch;
+
+    @FXML
     public void initialize() {
-        // Bind columns to DeliveryDto fields
+        // Setup table columns
         colDeliveryId.setCellValueFactory(new PropertyValueFactory<>("deliveryId"));
         colPurchaseOrderId.setCellValueFactory(new PropertyValueFactory<>("purchaseOrdersId"));
         colDeliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
-        colDriverId.setCellValueFactory(new PropertyValueFactory<>("employeeId")); // Correct binding
+        colDriverId.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
         colDeliveryStatus.setCellValueFactory(new PropertyValueFactory<>("deliveryStatus"));
 
+        // Load ComboBoxes and Table
         try {
-            resetPage();
+            loadComboBoxes();
+            loadAllDeliveries();
+            resetButtonsAndFields();
         } catch (Exception e) {
-            showAlert("Error", "Initialization failed: " + e.getMessage());
+            showAlert("Error", "Initialization error: " + e.getMessage());
         }
 
-        tblDelivery.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
+        // Listen table selection to populate form for update/delete
+        tblDelivery.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                btnAdd.setDisable(true);
                 btnUpdate.setDisable(false);
                 btnDelete.setDisable(false);
-                btnAdd.setDisable(true);
 
-                txtId.setText(newValue.getDeliveryId());
-                txtPurchaseOrderId.setText(newValue.getPurchaseOrdersId());
-                txtDeliveryDate.setText(newValue.getDeliveryDate());
-                txtDriverId.setText(newValue.getEmployeeId());
-                txtDeliveryStatus.setText(newValue.getDeliveryStatus());
+                txtId.setText(newSelection.getDeliveryId());
+                cmbPurchaseOrderId.setValue(newSelection.getPurchaseOrdersId());
+                dpDeliveryDate.setValue(LocalDate.parse(newSelection.getDeliveryDate()));
+                cmbDriverId.setValue(newSelection.getEmployeeId());
+                txtDeliveryStatus.setText(newSelection.getDeliveryStatus());
             } else {
                 resetButtonsAndFields();
             }
         });
     }
 
-    private void resetPage() {
-        loadDeliveryTable();
-        resetButtonsAndFields();
+    private void loadComboBoxes() throws SQLException, ClassNotFoundException {
+        ArrayList<String> purchaseOrderIds = DeliveryModel.getAllPurchaseOrderIds();
+        cmbPurchaseOrderId.setItems(FXCollections.observableArrayList(purchaseOrderIds));
+
+        ArrayList<String> employeeIds = DeliveryModel.getAllEmployeeIds();
+        cmbDriverId.setItems(FXCollections.observableArrayList(employeeIds));
     }
 
-    private void loadDeliveryTable() {
+    private void loadAllDeliveries() throws SQLException, ClassNotFoundException {
+        ArrayList<DeliveryDto> deliveries = DeliveryModel.getAllDeliveries();
+        tblDelivery.setItems(FXCollections.observableArrayList(deliveries));
+    }
+
+    @FXML
+    void onAddClicked() {
         try {
-            ArrayList<DeliveryDto> allDeliveries = DeliveryModel.getAllDeliveries();
-            ObservableList<DeliveryDto> deliveryList = FXCollections.observableArrayList(allDeliveries);
-            tblDelivery.setItems(deliveryList);
-        } catch (SQLException | ClassNotFoundException e) {
-            showAlert("Error", "Failed to load delivery data: " + e.getMessage());
-        }
-    }
-
-    public void AddToDelivery(ActionEvent actionEvent) {
-        performSaveOrUpdate("add");
-    }
-
-    public void UpdateToDelivery(ActionEvent actionEvent) {
-        performSaveOrUpdate("update");
-    }
-
-    private void performSaveOrUpdate(String action) {
-        try {
-            DeliveryDto deliveryDto = new DeliveryDto(
+            DeliveryDto dto = new DeliveryDto(
                     txtId.getText(),
-                    txtPurchaseOrderId.getText(),
-                    txtDeliveryDate.getText(),
-                    txtDriverId.getText(),
+                    cmbPurchaseOrderId.getValue(),
+                    dpDeliveryDate.getValue().toString(),
+                    cmbDriverId.getValue(),
                     txtDeliveryStatus.getText()
             );
-
-            String result;
-            if (action.equals("add")) {
-                result = DeliveryModel.saveDelivery(deliveryDto);
-            } else {
-                result = DeliveryModel.updateDelivery(deliveryDto);
-            }
-
-            showAlert(action.equals("add") ? "Add Delivery" : "Update Delivery", result);
-            resetPage();
-        } catch (SQLException | ClassNotFoundException e) {
-            showAlert("Error", "Failed to " + action + " delivery: " + e.getMessage());
+            String message = DeliveryModel.saveDelivery(dto);
+            showAlert("Add Delivery", message);
+            loadAllDeliveries();
+            resetButtonsAndFields();
+        } catch (Exception e) {
+            showAlert("Error", "Add failed: " + e.getMessage());
         }
     }
 
-    public void DeleteToDelivery(ActionEvent actionEvent) {
+    @FXML
+    void onUpdateClicked() {
+        try {
+            DeliveryDto dto = new DeliveryDto(
+                    txtId.getText(),
+                    cmbPurchaseOrderId.getValue(),
+                    dpDeliveryDate.getValue().toString(),
+                    cmbDriverId.getValue(),
+                    txtDeliveryStatus.getText()
+            );
+            String message = DeliveryModel.updateDelivery(dto);
+            showAlert("Update Delivery", message);
+            loadAllDeliveries();
+            resetButtonsAndFields();
+        } catch (Exception e) {
+            showAlert("Error", "Update failed: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    void onDeleteClicked() {
         try {
             String deliveryId = txtId.getText();
-            String result = DeliveryModel.deleteDelivery(Integer.parseInt(deliveryId));
-            showAlert("Delete Delivery", result);
-            resetPage();
-        } catch (SQLException | ClassNotFoundException e) {
-            showAlert("Error", "Failed to delete delivery: " + e.getMessage());
+            String message = DeliveryModel.deleteDelivery(deliveryId);
+            showAlert("Delete Delivery", message);
+            loadAllDeliveries();
+            resetButtonsAndFields();
+        } catch (Exception e) {
+            showAlert("Error", "Delete failed: " + e.getMessage());
         }
     }
 
-    public void ResetToDelivery(ActionEvent actionEvent) {
-        resetPage();
+    @FXML
+    void onSearchChanged() {
+        try {
+            String searchText = txtSearch.getText().trim();
+            if (searchText.isEmpty()) {
+                loadAllDeliveries();
+            } else {
+                ArrayList<DeliveryDto> filtered = DeliveryModel.searchDeliveries(searchText);
+                tblDelivery.setItems(FXCollections.observableArrayList(filtered));
+            }
+        } catch (Exception e) {
+            showAlert("Error", "Search failed: " + e.getMessage());
+        }
+    }
+
+    private void resetButtonsAndFields() {
+        txtId.clear();
+        cmbPurchaseOrderId.getSelectionModel().clearSelection();
+        dpDeliveryDate.setValue(null);
+        cmbDriverId.getSelectionModel().clearSelection();
+        txtDeliveryStatus.clear();
+
+        btnAdd.setDisable(false);
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
     }
 
     private void showAlert(String title, String message) {
@@ -134,31 +194,8 @@ public class DeliveryController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    private void resetButtonsAndFields() {
-        btnAdd.setDisable(false);
-        btnUpdate.setDisable(true);
-        btnDelete.setDisable(true);
-        txtId.clear();
-        txtPurchaseOrderId.clear();
-        txtDeliveryDate.clear();
-        txtDriverId.clear();
-        txtDeliveryStatus.clear();
+    public void resetToDelivery(ActionEvent actionEvent) {
+        resetButtonsAndFields();
     }
 
-    public void SearchDelivery(ActionEvent actionEvent) {
-        String searchText = txtSearch.getText().toLowerCase();
-
-        try {
-            ArrayList<DeliveryDto> filteredDeliveries = DeliveryModel.searchDeliveries(searchText);
-            ObservableList<DeliveryDto> filteredList = FXCollections.observableArrayList(filteredDeliveries);
-            tblDelivery.setItems(filteredList);
-
-            if (filteredList.isEmpty()) {
-                showAlert("Search Result", "No matching deliveries found.");
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            showAlert("Error", "Search failed: " + e.getMessage());
-        }
-    }
 }

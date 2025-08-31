@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -16,7 +18,7 @@
    <children>
       <!-- Search Bar -->
       <TextField fx:id="txtSearch" layoutX="99.0" layoutY="161.0" prefWidth="200.0" promptText="Search by Supplier ID" style="-fx-font-size: 14px;" />
-      <Button fx:id="btnSearch" layoutX="341.0" layoutY="161.0" onAction="#SearchSupplierOrder" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Search" />
+      <Button fx:id="btnSearch" layoutX="341.0" layoutY="161.0" onAction="#SearchSupplierOrders" prefWidth="100.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Search" />
 
       <!-- Page Title -->
       <Label layoutX="419.0" layoutY="28.0" text="Supplier Orders" textFill="#7c1616">
@@ -28,14 +30,13 @@
       <!-- Form Inputs -->
       <VBox layoutX="99.0" layoutY="256.0" spacing="10.0" style="-fx-padding: 10; -fx-background-color: #ffffff; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-background-radius: 8;">
          <children>
-            <HBox spacing="10.0" />
             <HBox spacing="10.0">
                <Label prefWidth="120.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Order Date:" />
-               <TextField fx:id="txtOrderDate" prefWidth="200.0" style="-fx-font-size: 14px;" />
+               <DatePicker fx:id="datePickerOrderDate" prefWidth="200.0" style="-fx-font-size: 14px;" />
             </HBox>
             <HBox spacing="10.0">
                <Label prefWidth="120.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Supplier ID:" />
-               <TextField fx:id="txtSupplierId" prefWidth="200.0" style="-fx-font-size: 14px;" />
+               <ComboBox fx:id="comboBoxSupplierId" prefWidth="200.0" promptText="Select Supplier ID" style="-fx-font-size: 14px;" />
             </HBox>
          </children>
       </VBox>
@@ -50,13 +51,11 @@
       </TableView>
 
       <!-- Buttons -->
-      <Button fx:id="btnAdd" layoutX="109.0" layoutY="412.0" onAction="#AddToSupplierOrder" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
-      <Button fx:id="btnUpdate" layoutX="275.0" layoutY="412.0" onAction="#UpdateSupplierOrder" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
-      <Button fx:id="btnDelete" layoutX="441.0" layoutY="412.0" onAction="#DeleteSupplierOrder" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
-      <Button fx:id="btnReset" layoutX="605.0" layoutY="412.0" onAction="#ResetSupplierOrder" prefHeight="39.0" prefWidth="133.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />
-      <Label layoutX="547.0" layoutY="199.0" opacity="0.0" prefWidth="120.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Order ID:" />
-      <TextField fx:id="txtOrderId" editable="false" layoutX="521.0" layoutY="256.0" opacity="0.0" prefWidth="200.0" style="-fx-font-size: 14px;" />
-      <ImageView fitHeight="30.0" fitWidth="39.0" layoutX="138.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="btnAdd" layoutX="109.0" layoutY="412.0" onAction="#AddToSupplierOrders" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Add" />
+      <Button fx:id="btnUpdate" layoutX="275.0" layoutY="412.0" onAction="#UpdateToSupplierOrders" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Update" />
+      <Button fx:id="btnDelete" layoutX="441.0" layoutY="412.0" onAction="#DeleteToSupplierOrders" prefHeight="39.0" prefWidth="155.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Delete" />
+      <Button fx:id="btnReset" layoutX="605.0" layoutY="412.0" onAction="#ResetToSupplierOrders" prefHeight="39.0" prefWidth="133.0" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;" text="Reset" />
+      <ImageView fitHeight="30.0" fitWidth="39.0" layoutX="134.0" layoutY="417.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/add.png" />
          </image>

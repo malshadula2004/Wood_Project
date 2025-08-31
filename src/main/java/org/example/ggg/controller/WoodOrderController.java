@@ -8,13 +8,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.ggg.TM.woodTM;
 import org.example.ggg.dbconnection.DBConnection;
-import org.example.ggg.model.CustomersModel;
+import org.example.ggg.dao.impl.CustomersDAOImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class WoodOrderController {
 
@@ -32,13 +31,14 @@ public class WoodOrderController {
 
     @FXML
     private TableColumn<woodTM, String> colItemId, colName, colQuantity, colPrice, colTotal;
+
     @FXML
     private TableColumn<woodTM, Button> colAction;
 
     @FXML
     private TextField txtAddToCartQty;
 
-    private final CustomersModel customerModel = new CustomersModel();
+    private final CustomersDAOImpl customerModel = new CustomersDAOImpl();
     private ObservableList<woodTM> cartList = FXCollections.observableArrayList();
 
     @FXML
@@ -115,6 +115,13 @@ public class WoodOrderController {
         try {
             requestedQty = Double.parseDouble(txtAddToCartQty.getText());
             double availableQty = Double.parseDouble(lblItemQty.getText());
+
+            // Prevent adding if available quantity is zero
+            if (availableQty <= 0) {
+                new Alert(Alert.AlertType.WARNING, "This item is out of stock!").show();
+                return;
+            }
+
             if (requestedQty > availableQty) {
                 new Alert(Alert.AlertType.WARNING, "Insufficient stock!").show();
                 return;
@@ -124,19 +131,32 @@ public class WoodOrderController {
             return;
         }
 
+        // Calculate total and add 10% additional charge
         double total = requestedQty * Double.parseDouble(unitPrice);
+        double totalWithAdditionalCharge = total * 10; // Adding 10%
+
         Button removeButton = new Button("Remove");
         removeButton.setOnAction(e -> {
             cartList.removeIf(item -> item.getWoodId().equals(woodId));
             tblCart.refresh();
         });
 
-        woodTM cartItem = new woodTM(woodId, woodName, String.valueOf(requestedQty), unitPrice, String.format("%.2f", total), removeButton);
+        woodTM cartItem = new woodTM(
+                woodId,
+                woodName,
+                String.valueOf(requestedQty),
+                unitPrice,
+                String.format("%.2f", totalWithAdditionalCharge),
+                removeButton
+        );
+
         cartList.add(cartItem);
         tblCart.setItems(cartList);
 
+        // Update the available quantity
         lblItemQty.setText(String.valueOf(Double.parseDouble(lblItemQty.getText()) - requestedQty));
     }
+
 
     @FXML
     private void btnPlaceOrderOnAction(ActionEvent event) {
@@ -144,9 +164,41 @@ public class WoodOrderController {
             new Alert(Alert.AlertType.WARNING, "Cart is empty!").show();
             return;
         }
-        new Alert(Alert.AlertType.INFORMATION, "Order placed successfully!").show();
-        resetForm();
+
+        try (Connection connection = DBConnection.getInstance().getConnection()) {
+            connection.setAutoCommit(false);
+
+            for (woodTM item : cartList) {
+                String updateInventoryQuery = "UPDATE wood_inventory SET wood_length = wood_length - ? WHERE wood_id = ?";
+                try (PreparedStatement psUpdate = connection.prepareStatement(updateInventoryQuery)) {
+                    psUpdate.setDouble(1, Double.parseDouble(item.getQuantity())); // Reduce length
+                    psUpdate.setInt(2, Integer.parseInt(item.getWoodId())); // Reference wood ID
+                    psUpdate.executeUpdate();
+                }
+
+                String insertOrderQuery = "INSERT INTO wood_order (woodOrderId, woodId, name, quantity, price, total) " +
+                        "VALUES (DEFAULT, ?, ?, ?, ?, ?)";
+                try (PreparedStatement psInsert = connection.prepareStatement(insertOrderQuery)) {
+                    psInsert.setString(1, item.getWoodId());
+                    psInsert.setString(2, item.getName());
+                    psInsert.setDouble(3, Double.parseDouble(item.getQuantity()));
+                    psInsert.setDouble(4, Double.parseDouble(item.getPrice()));
+                    psInsert.setDouble(5, Double.parseDouble(item.getTotal()));
+                    psInsert.executeUpdate();
+                }
+            }
+
+            connection.commit();
+            new Alert(Alert.AlertType.INFORMATION, "Order placed successfully!").show();
+            resetForm();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to place order!").show();
+        }
     }
+
+
 
     @FXML
     private void btnResetOnAction(ActionEvent event) {

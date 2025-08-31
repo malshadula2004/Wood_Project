@@ -6,8 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import org.example.ggg.dto.VehicleDetailsDto;
-import org.example.ggg.model.VehicleDetailsModel;
+import org.example.ggg.model.VehicleDetailsDto;
+import org.example.ggg.dao.impl.VehicleDetailsModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,7 +35,6 @@ public class VehicleDetailsController {
     public AnchorPane VehicalPage;
 
     public void initialize() {
-        // Initialize TableView columns
         colVehicalId.setCellValueFactory(new PropertyValueFactory<>("vehicleId"));
         colVehicalNumber.setCellValueFactory(new PropertyValueFactory<>("vehicleNumber"));
         colType.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -49,15 +48,12 @@ public class VehicleDetailsController {
             showAlert("Error", "Initialization failed: " + e.getMessage());
         }
 
-        // Add listener to TableView selection
         tblVehical.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                // Enable Update and Delete buttons
                 btnUpdate.setDisable(false);
                 btnDelete.setDisable(false);
-                btnAdd.setDisable(true); // Disable Add button when a row is selected
+                btnAdd.setDisable(true);
 
-                // Load selected row's data into the fields
                 txtId.setText(newValue.getVehicleId());
                 txtVehicalNumber.setText(newValue.getVehicleNumber());
                 txtType.setText(newValue.getType());
@@ -65,30 +61,17 @@ public class VehicleDetailsController {
                 txtStatus.setText(newValue.getStatus());
                 txtUserId.setText(newValue.getUserId());
             } else {
-                // No row selected, enable Add button and disable others
-                btnUpdate.setDisable(true);
-                btnDelete.setDisable(true);
-                btnAdd.setDisable(false); // Enable Add button when no row is selected
-
-                // Clear the text fields
                 clearFields();
             }
         });
     }
 
     private void resetPage() {
-        try {
-            loadVehicleTable();
-
-            // Enable/disable buttons as needed
-            btnAdd.setDisable(false);
-            btnUpdate.setDisable(true);
-            btnDelete.setDisable(true);
-
-            clearFields();
-        } catch (Exception e) {
-            showAlert("Error", "Failed to reset page: " + e.getMessage());
-        }
+        loadVehicleTable();
+        btnAdd.setDisable(false);
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
+        clearFields();
     }
 
     public void loadVehicleTable() {
@@ -104,7 +87,7 @@ public class VehicleDetailsController {
     public void AddToVehical(ActionEvent actionEvent) {
         try {
             VehicleDetailsDto vehicleDetailsDto = new VehicleDetailsDto(
-                    txtId.getText(),
+                    null,
                     txtVehicalNumber.getText(),
                     txtType.getText(),
                     txtCapacity.getText(),
@@ -166,10 +149,40 @@ public class VehicleDetailsController {
     }
 
     public void ResetToVehical(ActionEvent actionEvent) {
+        resetPage();
+    }
+
+    public void SearchVehical(ActionEvent actionEvent) {
         try {
-            resetPage();
-        } catch (Exception e) {
-            showAlert("Error", "Failed to reset page: " + e.getMessage());
+            String vehicleNumber = txtVehicalNumber.getText(); // Get the entered vehicle number
+            if (vehicleNumber.isEmpty()) {
+                showAlert("Search Error", "Please enter a Vehicle Number to search!");
+                return;
+            }
+
+            VehicleDetailsDto vehicle = VehicleDetailsModel.getVehicleByNumber(vehicleNumber);
+
+            if (vehicle != null) {
+                // Populate the fields with the vehicle's details
+                txtId.setText(vehicle.getVehicleId());
+                txtType.setText(vehicle.getType());
+                txtCapacity.setText(vehicle.getCapacity());
+                txtStatus.setText(vehicle.getStatus());
+                txtUserId.setText(vehicle.getUserId());
+
+                // Optionally, highlight the vehicle in the TableView
+                tblVehical.getItems().stream()
+                        .filter(item -> item.getVehicleNumber().equals(vehicleNumber))
+                        .findFirst()
+                        .ifPresent(item -> tblVehical.getSelectionModel().select(item));
+
+                showAlert("Search Result", "Vehicle found!");
+            } else {
+                showAlert("Search Result", "No vehicle found with the provided number!");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert("Error", "Failed to search vehicle: " + e.getMessage());
         }
     }
+
 }

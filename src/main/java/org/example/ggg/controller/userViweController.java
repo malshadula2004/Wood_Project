@@ -5,8 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.ggg.dto.UserDto;
-import org.example.ggg.model.UserViweModel;
+import org.example.ggg.model.UserDto;
+import org.example.ggg.dao.impl.UserViweModel;
 
 import java.sql.SQLException;
 

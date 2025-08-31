@@ -6,15 +6,29 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.chart.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
+
 
 public class OwnerDashboardController {
 
@@ -53,8 +67,207 @@ public class OwnerDashboardController {
     public Button btnOrderSearch;
     public Button btnPaymentt;
     public Button btnSubOrder;
+    @FXML
+    private BarChart<String, Number> itemBC;
+    public BarChart <String, Number>woodBC;
+    @FXML
+    private BarChart<String, Number> barChart1;
 
-    // MenuItem Action Handler
+    @FXML
+    private BarChart<String, Number> barChart2;
+
+
+    @FXML
+    private PieChart taskProgressPieChart;
+
+
+
+
+
+    // Initialization method called after FXML loads
+
+
+    // Initialization method called after FXML loads
+    @FXML
+    public void initialize() {
+        loadItemSalesDataFromDB();
+        loadWoodOrderDataToAreaChart();
+        loadTaskProgressPieChart(); // <- CORRECT METHOD CALL HERE
+        loadInventoryItemsToBarChart(); // Load inventory items into bar chart
+        loadWoodInventoryToBarChart(); // Load wood inventory into bar chart
+    }
+
+    private void loadWoodInventoryToBarChart() {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Wood Length (meters)");
+
+        String url = "jdbc:mysql://localhost:3306/wood";
+        String user = "root";
+        String password = "1234";
+
+        String query = "SELECT wood_name, wood_length FROM wood_inventory";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String woodName = rs.getString("wood_name");
+                double woodLength = rs.getDouble("wood_length");
+                series.getData().add(new XYChart.Data<>(woodName, woodLength));
+            }
+
+            woodBC.getData().clear();
+            woodBC.getData().add(series);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to load wood inventory into bar chart.").show();
+        }
+    }
+
+
+    private void loadInventoryItemsToBarChart() {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Available Quantity");
+
+        String url = "jdbc:mysql://localhost:3306/wood";
+        String user = "root";
+        String password = "1234";
+
+        String query = "SELECT i.Name, inv.QuantityAvailable " +
+                "FROM inventory inv " +
+                "JOIN items i ON inv.ItemID = i.ItemID";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String itemName = rs.getString("Name"); // <- Correct column name here
+                int quantityAvailable = rs.getInt("QuantityAvailable");
+                series.getData().add(new XYChart.Data<>(itemName, quantityAvailable));
+            }
+
+            itemBC.getData().clear();
+            itemBC.getData().add(series);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to load inventory items into bar chart.").show();
+        }
+    }
+
+
+    // Load Item Sales Data to BarChart (barChart1)
+    private void loadItemSalesDataFromDB() {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Item Sales Quantity");
+
+        String url = "jdbc:mysql://localhost:3306/wood";
+        String user = "root";
+        String password = "1234";
+
+        String query = "SELECT ItemName, SUM(Quantity) AS TotalQuantity FROM purchase_orders GROUP BY ItemName";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String itemName = rs.getString("ItemName");
+                int totalQuantity = rs.getInt("TotalQuantity");
+                series.getData().add(new XYChart.Data<>(itemName, totalQuantity));
+            }
+
+            barChart1.getData().clear();
+            barChart1.getData().add(series);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to load sales data from database.").show();
+        }
+    }
+
+    // Load Wood Order Data to BarChart (barChart2)
+    private void loadWoodOrderDataToAreaChart() {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Wood Order Quantity");
+
+        String url = "jdbc:mysql://localhost:3306/wood";
+        String user = "root";
+        String password = "1234";
+
+        String query = "SELECT name, SUM(quantity) AS TotalQuantity FROM wood_order GROUP BY name";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String woodName = rs.getString("name");
+                double totalQuantity = rs.getDouble("TotalQuantity");
+                series.getData().add(new XYChart.Data<>(woodName, totalQuantity));
+            }
+
+            barChart2.getData().clear();
+            barChart2.getData().add(series);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to load wood order data.").show();
+        }
+    }
+
+    // Load Task Progress Data to PieChart
+    private void loadTaskProgressPieChart() {
+        String url = "jdbc:mysql://localhost:3306/wood";
+        String user = "root";
+        String password = "1234";
+
+        String completedQuery = "SELECT COUNT(*) AS Completed FROM taskassignments WHERE Status = 'Completed'";
+        String pendingQuery = "SELECT COUNT(*) AS Pending FROM taskassignments WHERE Status = 'Pending'";
+        String inProgressQuery = "SELECT COUNT(*) AS InProgress FROM taskassignments WHERE Status = 'In Progress'";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement completedStmt = connection.prepareStatement(completedQuery);
+             PreparedStatement pendingStmt = connection.prepareStatement(pendingQuery);
+             PreparedStatement inProgressStmt = connection.prepareStatement(inProgressQuery)) {
+
+            ResultSet rsCompleted = completedStmt.executeQuery();
+            ResultSet rsPending = pendingStmt.executeQuery();
+            ResultSet rsInProgress = inProgressStmt.executeQuery();
+
+            int completedTasks = 0, pendingTasks = 0, inProgressTasks = 0;
+
+            if (rsCompleted.next()) completedTasks = rsCompleted.getInt("Completed");
+            if (rsPending.next()) pendingTasks = rsPending.getInt("Pending");
+            if (rsInProgress.next()) inProgressTasks = rsInProgress.getInt("InProgress");
+
+            // PieChart Data Load
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                    new PieChart.Data("Completed", completedTasks),
+                    new PieChart.Data("Pending", pendingTasks),
+                    new PieChart.Data("In Progress", inProgressTasks)
+            );
+
+            taskProgressPieChart.setData(pieChartData);
+            taskProgressPieChart.setTitle("Task Progress");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to load task progress pie chart.").show();
+        }
+
+    }
+
+    private void reloadDashboardCharts() {
+        loadItemSalesDataFromDB();
+        loadWoodOrderDataToAreaChart();
+        loadTaskProgressPieChart();
+        loadInventoryItemsToBarChart();
+        loadWoodInventoryToBarChart();
+    }
 
 
     @FXML
@@ -66,13 +279,15 @@ public class OwnerDashboardController {
                 fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/ggg/view/Chair.fxml"));
             } else if (event.getSource() == itemTable) {
                 fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/ggg/view/table.fxml"));
+            } else if (event.getSource() == itemSofa) {
+                fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/ggg/view/sofa.fxml"));
             } else {
                 throw new IllegalArgumentException("Unhandled menu item action.");
             }
 
             Parent pane = fxmlLoader.load();
             ownerAncerpain.getChildren().retainAll(AllItem);
-            ownerAncerpain.getChildren().add(pane); // Add the new content
+            ownerAncerpain.getChildren().add(pane);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,8 +295,6 @@ public class OwnerDashboardController {
         }
     }
 
-
-    // Navigation Method
     private void navigateTo(String path) {
         try {
             ownerAncerpain.getChildren().clear();
@@ -89,11 +302,9 @@ public class OwnerDashboardController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
             AnchorPane pane = fxmlLoader.load();
 
-            // Bind properties for responsive layout
             pane.prefWidthProperty().bind(ownerAncerpain.widthProperty());
             pane.prefHeightProperty().bind(ownerAncerpain.heightProperty());
 
-            // Set background color
             pane.setStyle("-fx-background-color: #fff3e6;");
 
             ownerAncerpain.getChildren().add(pane);
@@ -103,13 +314,20 @@ public class OwnerDashboardController {
         }
     }
 
-    // Home Action
+    // Remaining methods (HomeAction, EmpolyeeAction, OrderAction, etc.) keep unchanged as you wrote
+    // ... (copy your existing methods here) ...
+
+
+
+// Home Action
     public void HomeAction(ActionEvent actionEvent) {
         // Clear all existing children
         ownerAncerpain.getChildren().clear();
 
         // Add unique components (ensure all three are defined in your controller)
-        ownerAncerpain.getChildren().addAll(btnOrderSearch,btnPaymentt,btnSubOrder);
+        ownerAncerpain.getChildren().addAll();
+        ownerAncerpain.getChildren().addAll(barChart1, barChart2, taskProgressPieChart, itemBC, woodBC);
+        reloadDashboardCharts();
     }
 
 

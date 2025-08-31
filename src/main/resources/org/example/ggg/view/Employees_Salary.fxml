@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="EmployeeSalaryPage" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ggg.controller.EmployeeSalaryController">
@@ -23,12 +27,18 @@
         <Label layoutX="50.0" layoutY="160.0" text="Monthly Salary:" />
         <TextField fx:id="txtMonthlySalary" layoutX="150.0" layoutY="155.0" promptText="Enter Monthly Salary" />
 
-        <!-- Buttons -->
-        <Button fx:id="btnAdd" layoutX="400.0" layoutY="100.0" text="Add" onAction="#addEmployeeSalary" />
-        <Button fx:id="btnUpdate" layoutX="400.0" layoutY="140.0" text="Update" onAction="#updateEmployeeSalary" />
-        <Button fx:id="btnDelete" layoutX="400.0" layoutY="180.0" text="Delete" onAction="#deleteEmployeeSalary" />
-        <Button fx:id="btnReset" layoutX="400.0" layoutY="220.0" text="Reset" onAction="#resetEmployeeSalary" />
+        <!-- Attendance Days & Task Assignments (Read-Only) -->
+        <Label layoutX="388.0" layoutY="70.0" text="Monthly w/d:" />
+        <TextField fx:id="txtWD" layoutX="495.0" layoutY="65.0" promptText="Days Worked This Month" editable="false" />
 
+        <Label layoutX="383.0" layoutY="110.0" text="Task Assignment" />
+        <TextField fx:id="txtTA" layoutX="495.0" layoutY="105.0" promptText="Pending Tasks" editable="false" />
+
+        <!-- Buttons -->
+        <Button fx:id="btnAdd" layoutX="400.0" layoutY="269.0" onAction="#addEmployeeSalary" text="Add" />
+        <Button fx:id="btnUpdate" layoutX="476.0" layoutY="254.0" onAction="#updateEmployeeSalary" text="Update" />
+        <Button fx:id="btnDelete" layoutX="400.0" layoutY="180.0" onAction="#deleteEmployeeSalary" text="Delete" />
+        <Button fx:id="btnReset" layoutX="400.0" layoutY="220.0" onAction="#resetEmployeeSalary" text="Reset" />
 
         <!-- TableView -->
         <TableView fx:id="tblEmployeeSalary" layoutX="50.0" layoutY="320.0" prefHeight="250.0" prefWidth="700.0">

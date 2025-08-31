@@ -24,7 +24,7 @@
       </Button>
       <TextField fx:id="CreateUserName" layoutX="457.0" layoutY="121.0" prefHeight="39.0" prefWidth="221.0" promptText="create username" />
       <TextField fx:id="createPassword" layoutX="457.0" layoutY="209.0" prefHeight="39.0" prefWidth="221.0" promptText="create password" />
-      <CheckBox fx:id="CBOwner" layoutX="387.0" layoutY="321.0" mnemonicParsing="false" text="Owner">
+      <CheckBox fx:id="CBOwner" layoutX="492.0" layoutY="282.0" mnemonicParsing="false" text="Owner">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -34,7 +34,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="CBAccontant" layoutX="603.0" layoutY="321.0" mnemonicParsing="false" text="Accountant">
+      <CheckBox fx:id="CBAccontant" layoutX="603.0" layoutY="321.0" mnemonicParsing="false" opacity="0.0" text="Accountant">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -63,6 +63,11 @@
       <ImageView fx:id="userLogo" fitHeight="39.0" fitWidth="51.0" layoutX="407.0" layoutY="121.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/user.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="337.0" fitWidth="374.0" layoutX="-1.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/3f663e2f-f932-43a2-bf2c-17e232aff409-removebg-preview.png" />
          </image>
       </ImageView>
    </children>

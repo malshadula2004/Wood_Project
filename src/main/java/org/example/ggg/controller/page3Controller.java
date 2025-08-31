@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.example.ggg.dto.UserDto;
+import org.example.ggg.model.UserDto;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -102,6 +102,8 @@ public class page3Controller {
         return userDto;
     }
 
+
+
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -109,4 +111,12 @@ public class page3Controller {
         alert.setContentText(message);
         alert.showAndWait();
     }
-}
+
+    public void gotosignpageActtiom(ActionEvent actionEvent) throws IOException {
+
+            loginPage.getChildren().clear();
+            AnchorPane page1 = FXMLLoader.load(getClass().getResource("/org/example/ggg/view/user.fxml"));
+            loginPage.getChildren().setAll(page1);
+        }
+    }
+

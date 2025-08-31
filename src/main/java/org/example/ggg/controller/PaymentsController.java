@@ -6,24 +6,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.ggg.dto.PaymentsDto;
-import org.example.ggg.model.PaymentsModel;
+import org.example.ggg.model.PaymentsDto;
+import org.example.ggg.dao.impl.PaymentsModel;
 
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class PaymentsController {
 
-    public ComboBox<String> cmbCustomerId;
+    @FXML
+    private DatePicker dpPaymentDate;
+
+    @FXML
+    private ComboBox<String> cmbEmployeeId;
 
     @FXML
     private Button btnSearch;
 
     @FXML
-    private TextField txtSearch;
-
-    @FXML
-    private TextField txtPurchaseOrderId, txtCustomerId, txtPaymentDate, txtAmount, txtPaymentMethod, txtPaymentId;
+    private TextField txtSearch, txtPurchaseOrderId, txtAmount, txtPaymentMethod, txtId;
 
     @FXML
     private TableView<PaymentsDto> tblPayments;
@@ -35,13 +37,13 @@ public class PaymentsController {
     public void initialize() {
         colPaymentId.setCellValueFactory(new PropertyValueFactory<>("paymentId"));
         colPurchaseOrdersId.setCellValueFactory(new PropertyValueFactory<>("purchaseOrdersId"));
-        colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        colCustomerId.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
         colPaymentDate.setCellValueFactory(new PropertyValueFactory<>("paymentDate"));
         colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
         colPaymentMethod.setCellValueFactory(new PropertyValueFactory<>("paymentMethod"));
 
         loadPaymentsTable();
-        loadCustomerIds(); // Load customer IDs into ComboBox
+        loadEmployeeIds();
     }
 
     private void loadPaymentsTable() {
@@ -54,59 +56,73 @@ public class PaymentsController {
         }
     }
 
-    private void loadCustomerIds() {
+    private void loadEmployeeIds() {
         try {
-            ArrayList<String> customerIds = PaymentsModel.getCustomerIds();
-            cmbCustomerId.setItems(FXCollections.observableArrayList(customerIds));
+            ArrayList<String> employeeIds = PaymentsModel.getEmployeeIds();
+            cmbEmployeeId.setItems(FXCollections.observableArrayList(employeeIds));
         } catch (SQLException | ClassNotFoundException e) {
-            showError("Error loading customer IDs", e.getMessage());
+            showError("Error loading employee IDs", e.getMessage());
         }
     }
 
     @FXML
     private void addToPayment() {
         try {
+            if (dpPaymentDate.getValue() == null) {
+                showError("Invalid Input", "Please select a valid payment date.");
+                return;
+            }
+
+            String formattedDate = dpPaymentDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
             PaymentsDto payment = new PaymentsDto(
                     null,
                     txtPurchaseOrderId.getText(),
-                    txtCustomerId.getText(),
-                    txtPaymentMethod.getText(),
+                    cmbEmployeeId.getValue(),
+                    formattedDate,
                     txtAmount.getText(),
-                    txtPaymentDate.getText()
+                    txtPaymentMethod.getText()
             );
 
             String result = PaymentsModel.savePayment(payment);
             showInfo(result);
             loadPaymentsTable();
         } catch (Exception e) {
-            showError("Error adding payment", e.getMessage());
+            showError("Error Adding Payment", e.getMessage());
         }
     }
 
     @FXML
     private void updatePayment() {
         try {
+            if (dpPaymentDate.getValue() == null) {
+                showError("Invalid Input", "Please select a valid payment date.");
+                return;
+            }
+
+            String formattedDate = dpPaymentDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
             PaymentsDto payment = new PaymentsDto(
-                    txtPaymentId.getText(),
+                    txtId.getText(),
                     txtPurchaseOrderId.getText(),
-                    txtCustomerId.getText(),
-                    txtPaymentMethod.getText(),
+                    cmbEmployeeId.getValue(),
+                    formattedDate,
                     txtAmount.getText(),
-                    txtPaymentDate.getText()
+                    txtPaymentMethod.getText()
             );
 
             String result = PaymentsModel.updatePayment(payment);
             showInfo(result);
             loadPaymentsTable();
         } catch (Exception e) {
-            showError("Error updating payment", e.getMessage());
+            showError("Error Updating Payment", e.getMessage());
         }
     }
 
     @FXML
     private void deletePayment() {
         try {
-            String result = PaymentsModel.deletePayment(txtPaymentId.getText());
+            String result = PaymentsModel.deletePayment(txtId.getText());
             showInfo(result);
             loadPaymentsTable();
         } catch (Exception e) {
@@ -116,20 +132,20 @@ public class PaymentsController {
 
     @FXML
     private void resetFields() {
-        txtPaymentId.clear();
+        txtId.clear();
         txtPurchaseOrderId.clear();
-        txtCustomerId.clear();
-        txtPaymentDate.clear();
+        cmbEmployeeId.setValue(null);
+        dpPaymentDate.setValue(null);
         txtAmount.clear();
         txtPaymentMethod.clear();
     }
 
     @FXML
-    public void searchPaymentsByCustomer(ActionEvent actionEvent) {
+    private void searchPaymentsByEmployee(ActionEvent actionEvent) {
         try {
-            String customerId = txtSearch.getText();
-            ArrayList<PaymentsDto> paymentsByCustomer = PaymentsModel.searchPaymentsByCustomer(customerId);
-            tblPayments.setItems(FXCollections.observableArrayList(paymentsByCustomer));
+            String employeeId = txtSearch.getText();
+            ArrayList<PaymentsDto> paymentsByEmployee = PaymentsModel.searchPaymentsByEmployee(employeeId);
+            tblPayments.setItems(FXCollections.observableArrayList(paymentsByEmployee));
         } catch (SQLException | ClassNotFoundException e) {
             showError("Error searching payments", e.getMessage());
         }
@@ -140,7 +156,7 @@ public class PaymentsController {
     }
 
     private void showError(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, message);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(title);
         alert.setContentText(message);
         alert.showAndWait();

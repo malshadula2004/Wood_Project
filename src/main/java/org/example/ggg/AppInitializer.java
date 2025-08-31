@@ -14,7 +14,7 @@ public class AppInitializer extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Load the FXML file
-        Parent root = FXMLLoader.load(getClass().getResource("/org/example/ggg/view/WoodOrder.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/org/example/ggg/view/OwnerDashboard.fxml"));
 
         // Set up the scene and stage
         Scene scene = new Scene(root, 900, 400); // Width: 900, Height: 400

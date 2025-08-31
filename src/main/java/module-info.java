@@ -14,7 +14,8 @@ module org.example.ggg {
 
     exports org.example.ggg;
     opens org.example.ggg.controller to javafx.fxml;
-    opens org.example.ggg.dto to javafx.base;
     opens org.example.ggg.model to javafx.base;
+    opens org.example.ggg.dao.impl to javafx.base;
     opens org.example.ggg.TM to javafx.base;
+    exports org.example.ggg.bo;
 }
