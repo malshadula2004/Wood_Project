@@ -30,7 +30,7 @@ public class SupplierOrderController {
     private TableColumn<SupplierOrderDto, String> colOrderId, colOrderDate, colSupplierId;
 
     @FXML
-    private Button btnAdd, btnUpdate, btnDelete, btnReset, btnSearch;
+    private Button btnAdd, btnUpdate, btnDelete, btnReset;
 
     private ObservableList<SupplierOrderDto> supplierOrderList = FXCollections.observableArrayList();
 
